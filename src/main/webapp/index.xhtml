@@ -9,14 +9,14 @@
         <h1>Online Payment Service</h1>
         <h2>User Account</h2>
         Login: <h:link value="Login" outcome="user"/><br/>
-        Register: <h:link value="Register" outcome="userRegistration"/>
+        Register: <h:link value="Register" outcome="registration"/>
 
         <h2>Administrator Account</h2>
         Login: <h:link value="Login" outcome="admin"/><br/>
 
         <h2>Logout</h2>
         <h:form>
-            <h:commandButton value="Logout"/>
+            Logout: <h:commandButton value="Logout" action="#{loginBean.logout()}"/>
         </h:form>
     </h:body>
 </html>

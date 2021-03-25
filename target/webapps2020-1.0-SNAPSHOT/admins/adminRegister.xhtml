@@ -1,17 +1,57 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Admin Area</title>
+        <title>Admin Register</title>
     </h:head>
     <h:body>
         <h1>Online Payment Service</h1>
         <h2>Register Administrator</h2>
+        <!--        <h3>Promote Existing User</h3>
+                <h:form>
+                    <h:selectOneListbox id="selectUsername" title="Select Username" required="true" requiredMessage="Mandatory Field"></h:selectOneListbox>&nbsp;
+                    <h:commandButton id="submitAdmin" type="submit" value="Promote" title="Promote User"/>
+                </h:form>
+                <h3>Create new Administrator</h3>-->
         <h:form>
-            <h:outputLabel for="selectEmail" value="Select email: "/>
-            <h:selectOneListbox id="selectEmail" title="Select email" required="true" requiredMessage="Mandatory Field"></h:selectOneListbox>&nbsp;
-            <h:commandButton id="submitAdmin" type="submit" value="Promote" title="Promote User"/>
+            <h:panelGrid columns="3">
+
+                <h:outputLabel for="email" value="* Email:"/>
+                <h:inputText id="email" value="#{registrationBean.email}" required="true" requiredMessage="Mandatory Field" validatorMessage="Enter a valid email">
+                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                </h:inputText>
+                <h:message for="email" style="color:red"/>
+
+                <h:outputLabel for="firstName" value="* First Name:"/>
+                <h:inputText id="firstName" value="#{registrationBean.firstName}" required="true" requiredMessage="Mandatory Field"/>
+                <h:message for="firstName" style="color:red"/>
+
+                <h:outputLabel for="surname" value="* Last Name:"/>
+                <h:inputText id="surname" value="#{registrationBean.surname}" required="true" requiredMessage="Mandatory Field"/>
+                <h:message for="surname" style="color:red"/>
+
+                <h:outputLabel for="username" value="* User Name:"/>
+                <h:inputText id="username" value="#{registrationBean.username}" required="true" requiredMessage="Mandatory Field"/>
+                <h:message for="username" style="color:red"/>
+
+                <h:outputLabel for="password" value="* Password:"/>
+                <h:inputSecret id="password" value="#{registrationBean.password}" required="true" requiredMessage="Mandatory Field" validatorMessage="Password must contain 6 to 20 characters with at least one digit, upper case letter, lower case letter and symbol">
+                    <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{6,20})"/>
+                </h:inputSecret>
+                <h:message for="password" style="color:red" />
+
+                <h:outputLabel for="currency" value="* Currency:"/>
+                <h:selectOneMenu id="currency" value="#{registrationBean.currency}" required="true" requiredMessage="Mandatory Field">
+                    <f:selectItems value="#{registrationBean.currencies}"/>
+                </h:selectOneMenu>
+                <h:message for="currency" style="color:red"/>
+
+            </h:panelGrid><br/>
+
+            <h:commandButton id="register" type="submit" value="Register" action="#{registrationBean.registerAdmin()}" title="Register User"/>
+            &nbsp;<h:commandButton id="reset" type="reset" value="Reset Form" title="Reset Form"/>
         </h:form>
         <br/>
         <h:link value="Back to user area" outcome="admin" />

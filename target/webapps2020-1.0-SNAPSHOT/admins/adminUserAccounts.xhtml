@@ -1,16 +1,22 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Admin Area</title>
+        <title>Admin Transaction View</title>
     </h:head>
     <h:body>
         <h1>Online Payment Service</h1>
-        <h2>View User Transactions</h2>
+        <h2>View a User Transactions</h2>
         <h:form>
-            <h:outputLabel for="selectEmail" value="Select email: "/>
-            <h:selectOneListbox id="selectEmail" title="Select email" required="true" requiredMessage="Mandatory Field"></h:selectOneListbox>&nbsp;
+            <h:panelGrid columns="3">
+                <h:outputLabel for="selectUsername" value="Select username: "/>
+                <h:selectOneMenu value="#{adminBean.userName}" id="selectUsername" title="Select username" required="true" requiredMessage="Mandatory Field">
+                    <f:selectItems value="#{adminBean.userList}" var="user" itemValue="#{user.username}" itemLabel="#{user.username}"/>
+                </h:selectOneMenu> &nbsp;
+                <h:message for="selectUsername" style="color:red"/>
+            </h:panelGrid>
             <h:commandButton id="submitUser" type="submit" value="Submit" title="View User"/>
         </h:form>
         <br/>
