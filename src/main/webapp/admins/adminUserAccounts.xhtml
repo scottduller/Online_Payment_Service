@@ -12,14 +12,35 @@
         <h:form>
             <h:panelGrid columns="3">
                 <h:outputLabel for="selectUsername" value="Select username: "/>
-                <h:selectOneMenu value="#{adminBean.userName}" id="selectUsername" title="Select username" required="true" requiredMessage="Mandatory Field">
-                    <f:selectItems value="#{adminBean.userList}" var="user" itemValue="#{user.username}" itemLabel="#{user.username}"/>
-                </h:selectOneMenu> &nbsp;
+                <h:selectOneMenu value="#{adminUserAccountsBean.userName}" id="selectUsername" title="Select username" required="true" requiredMessage="Mandatory Field">
+                    <f:selectItems value="#{adminUserAccountsBean.userList}" var="user" itemValue="#{user.username}" itemLabel="#{user.username}"/>
+                </h:selectOneMenu> &#xA0;
                 <h:message for="selectUsername" style="color:red"/>
             </h:panelGrid>
-            <h:commandButton id="submitUser" type="submit" value="Submit" title="View User"/>
-        </h:form>
-        <br/>
-        <h:link value="Back to admin area" outcome="admin" />
+            <h:commandButton id="submitUser" type="submit" value="Submit" title="View User" action="#{adminUserAccountsBean.setSystemUser}" />
+        </h:form><br/>
+
+        <h:link value="Back to admin area" outcome="admin" /><br/><br/>
+
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="username" value="Username: "/>
+                <h:outputText id="username" value="#{adminUserAccountsBean.systemUser.username}"/>
+
+                <h:outputLabel for="email" value="Email: "/>
+                <h:outputText id="email" value="#{adminUserAccountsBean.systemUser.email}"/>
+
+                <h:outputLabel for="name" value="Name: "/>
+                <h:outputText id="name" value="#{adminUserAccountsBean.systemUser.firstName} #{adminUserAccountsBean.systemUser.surname}"/>
+
+                <h:outputLabel for="currency" value="Currency: "/>
+                <h:outputText id="currency" value="#{adminUserAccountsBean.systemUser.currency}"/>
+
+                <h:outputLabel for="balance" value="Balance: "/>
+                <h:outputText id="balance" value="#{adminUserAccountsBean.systemUser.balance}"/>
+            </h:panelGrid>
+        </h:form><br/>
+
+
     </h:body>
 </html>

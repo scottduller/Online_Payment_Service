@@ -16,21 +16,20 @@ import javax.persistence.Id;
  *
  * @author Scott
  */
+// NOTWORKING
 @Entity
-public class Request implements Serializable {
+public class UserTransaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private SystemUser requestReceivedFrom;
     private double amount;
 
-    public Request() {
+    public UserTransaction() {
     }
 
-    public Request(SystemUser requestReceivedFrom, double amount) {
-        this.requestReceivedFrom = requestReceivedFrom;
+    public UserTransaction(double amount, SystemUser transactionOwner, SystemUser userTransactionTo, SystemUser userTransactionFrom) {
         this.amount = amount;
     }
 
@@ -40,14 +39,6 @@ public class Request implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public SystemUser getRequestReceivedFrom() {
-        return requestReceivedFrom;
-    }
-
-    public void setRequestReceivedFrom(SystemUser requestReceivedFrom) {
-        this.requestReceivedFrom = requestReceivedFrom;
     }
 
     public double getAmount() {
@@ -60,10 +51,9 @@ public class Request implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.requestReceivedFrom);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.amount) ^ (Double.doubleToLongBits(this.amount) >>> 32));
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.id);
+        hash = 89 * hash + (int) (Double.doubleToLongBits(this.amount) ^ (Double.doubleToLongBits(this.amount) >>> 32));
         return hash;
     }
 
@@ -78,14 +68,11 @@ public class Request implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Request other = (Request) obj;
+        final UserTransaction other = (UserTransaction) obj;
         if (Double.doubleToLongBits(this.amount) != Double.doubleToLongBits(other.amount)) {
             return false;
         }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.requestReceivedFrom, other.requestReceivedFrom)) {
             return false;
         }
         return true;

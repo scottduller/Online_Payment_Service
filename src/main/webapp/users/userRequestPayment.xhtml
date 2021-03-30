@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+        <title>Make a Payment</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <h1>Online Payment Service</h1>
+        <h2>Payments</h2>
+        <h3>Request a Payment</h3>
+        <h:form>
+            <h:panelGrid columns="3">
+                <h:outputLabel for="selectUsernameRequest" value="Select username: "/>
+                <h:selectOneMenu value="#{userBean.userName}" id="selectUsernameRequest" title="Select username" required="true" requiredMessage="Mandatory Field">
+                    <f:selectItems value="#{userBean.userList}" var="user" itemValue="#{user.username}" itemLabel="#{user.username}"/>
+                </h:selectOneMenu>
+                <h:message for="selectUsernameRequest" style="color:red"/>
+
+                <h:outputLabel for="selectAmountRequest" value="Amount: "/>
+                <h:inputText id="selectAmountRequest" title="Amount" required="true" requiredMessage="Mandatory Field"/>
+                <h:message for="selectAmountRequest" style="color:red"/>
+
+            </h:panelGrid>
+            <br/>
+            <h:commandButton id="submitRequest" type="submit" value="Submit Request" title="Submit Request"/>&#xA0;
+            <h:commandButton id="resetRequest" type="reset" value="Reset Form" title="Reset Request Form"/><br/>
+            <br/>
+            <h:link value="Back to user payments" outcome="userPayments" />
+        </h:form>
+    </body>
+</html>

@@ -16,16 +16,17 @@ import javax.inject.Named;
  *
  * @author Scott
  */
-@Named(value = "adminBean")
+@Named(value = "adminUserAccountsBean")
 @RequestScoped
-public class AdminBean {
+public class AdminUserAccountsBean {
 
     @EJB
     UserService userService;
 
     private String userName;
+    private SystemUser systemUser;
 
-    public AdminBean() {
+    public AdminUserAccountsBean() {
     }
 
     public String getUserName() {
@@ -46,6 +47,14 @@ public class AdminBean {
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public SystemUser getSystemUser() {
+        return systemUser;
+    }
+
+    public void setSystemUser() {
+        this.systemUser = userService.getUserByUsername(userName).get(0);
     }
 
 }

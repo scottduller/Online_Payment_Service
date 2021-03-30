@@ -27,7 +27,7 @@
                 <h:message for="surname" style="color:red"/>
 
                 <h:outputLabel for="username" value="* User Name:"/>
-                <h:inputText id="username" value="#{registrationBean.username}" required="true" requiredMessage="Mandatory Field"/>
+                <h:inputText id="username" value="#{registrationBean.username}" validator="#{usernameValidator.validate}" required="true" requiredMessage="Mandatory Field"/>
                 <h:message for="username" style="color:red"/>
 
                 <h:outputLabel for="password" value="* Password:"/>
@@ -45,7 +45,7 @@
             </h:panelGrid><br/>
 
             <h:commandButton id="register" type="submit" value="Register" action="#{registrationBean.registerUser}" title="Register User"/>
-            &nbsp;<h:commandButton id="reset" type="reset" value="Reset Form" title="Reset Form"/>
+            &#xA0;<h:commandButton id="reset" type="reset" value="Reset Form" title="Reset Form"/>
         </h:form>
 
         <br/><br/>

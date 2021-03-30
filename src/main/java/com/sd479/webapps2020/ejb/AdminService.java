@@ -29,12 +29,6 @@ public class AdminService {
 
     public void registerAdmin(String email, String firstName, String surname, String username, String password, String currency, double balance) {
         try {
-            System.out.println(email);
-            System.out.println(firstName);
-            System.out.println(surname);
-            System.out.println(username);
-            System.out.println(password);
-
             SystemUser systemUser;
             SystemUserGroup systemUserGroup;
 
@@ -48,7 +42,7 @@ public class AdminService {
             }
             String passwordDB = sb.toString();
 
-            systemUser = new SystemUser(email, firstName, surname, username, passwordDB, currency, balance);
+            systemUser = new SystemUser(email, firstName, surname, username, passwordDB, balance, currency);
             systemUserGroup = new SystemUserGroup(username, "admins");
 
             em.persist(systemUser);

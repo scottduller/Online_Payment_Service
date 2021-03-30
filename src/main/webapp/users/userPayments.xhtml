@@ -10,57 +10,20 @@
         <h1>Online Payment Service</h1>
         <h2>Payments</h2>
         <h3>Payment Requests</h3>
-        <!--TODO:-->
         <h:dataTable value="#{UserBean.currentUserRequests}" var="request">
             <h:column>
-                <f:facet name="header">Name</f:facet>
-                    #{request.recieved}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Date of Visit</f:facet>
+                <f:facet name="header">Username</f:facet>
                     #{comment.visitDate}
             </h:column>
             <h:column>
-                <f:facet name="header">Comment</f:facet>
+                <f:facet name="header">Amount</f:facet>
                     #{comment.comment_str}
             </h:column>
         </h:dataTable>
-        <h3>Make a Payment</h3>
-        <h:form>
-            <h:panelGrid columns="3">
-                <h:outputLabel for="selectUsernamePayment" value="Select username: "/>
-                <h:selectOneMenu value="#{userBean.userName}" id="selectUsernamePayment" title="Select username" required="true" requiredMessage="Mandatory Field">
-                    <f:selectItems value="#{userBean.userList}" var="user" itemValue="#{user.username}" itemLabel="#{user.username}"/>
-                </h:selectOneMenu>
-                <h:message for="selectUsernamePayment" style="color:red"/>
-
-                <h:outputLabel for="selectAmountPayment" value="Amount: "/>
-                <h:inputText id="selectAmountPayment" title="Amount" required="true" requiredMessage="Mandatory Field"/>
-                <h:message for="selectAmountPayment" style="color:red"/>
-
-            </h:panelGrid>
-            <br/>
-            <h:commandButton id="submitPayment" type="submit" value="Submit" title="View User"/>&nbsp;
-            <h:commandButton id="reset" type="reset" value="Reset Form" title="Reset Form"/>
-        </h:form>
-        <h3>Request a Payment</h3>
-        <h:form>
-            <h:panelGrid columns="3">
-                <h:outputLabel for="selectUsernameRequest" value="Select username: "/>
-                <h:selectOneMenu value="#{userBean.userName}" id="selectUsernameRequest" title="Select username" required="true" requiredMessage="Mandatory Field">
-                    <f:selectItems value="#{userBean.userList}" var="user" itemValue="#{user.username}" itemLabel="#{user.username}"/>
-                </h:selectOneMenu>
-                <h:message for="selectUsernameRequest" style="color:red"/>
-
-                <h:outputLabel for="selectAmountRequest" value="Amount: "/>
-                <h:inputText id="selectAmountRequest" title="Amount" required="true" requiredMessage="Mandatory Field"/>
-                <h:message for="selectAmountRequest" style="color:red"/>
-
-            </h:panelGrid>
-            <br/>
-            <h:commandButton id="submitRequest" type="submit" value="Submit" title="View User"/>&nbsp;
-            <h:commandButton id="reset" type="reset" value="Reset Form" title="Reset Form"/>
-        </h:form>
+        <br/>
+        <h3>Request / Make a Payment</h3>
+        <h:link value="Make a payment" outcome="userMakePayment"/><br/>
+        <h:link value="Request a payment" outcome="userRequestPayment"/><br/>
         <br/>
         <h:link value="Back to user area" outcome="user" />
 

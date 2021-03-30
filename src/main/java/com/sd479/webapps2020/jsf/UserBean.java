@@ -6,9 +6,7 @@
 package com.sd479.webapps2020.jsf;
 
 import com.sd479.webapps2020.ejb.UserService;
-import com.sd479.webapps2020.entity.Request;
 import com.sd479.webapps2020.entity.SystemUser;
-import com.sd479.webapps2020.entity.Transaction;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -28,15 +26,6 @@ public class UserBean {
     private String userName;
 
     public UserBean() {
-    }
-
-//    TODO:
-    public List<Request> getCurrentUserRequests() {
-        return userService.getCurrentUser().getRequests();
-    }
-
-    public List<Transaction> getCurrentUserTransactions() {
-        return userService.getCurrentUser().getTransactions();
     }
 
     public String getUserName() {

@@ -12,10 +12,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
-import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -35,14 +33,9 @@ public class UserService {
         return systemUsers;
     }
 
-    //TODO:
-    public SystemUser getCurrentUser() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        String username = request.getUserPrincipal().getName();
-
-        SystemUser currentUser = em.createNamedQuery("findCurrentUser", SystemUser.class).setParameter("username", username).getSingleResult();
-
-        return currentUser;
+    public List<SystemUser> getUserByUsername(String username) {
+        List<SystemUser> systemUser = em.createNamedQuery("findUserByUsername").setParameter("username", username).getResultList();
+        return systemUser;
     }
 
     public void registerUser(String email, String firstName, String surname, String username, String password, String currency, double balance) {
@@ -60,7 +53,7 @@ public class UserService {
             }
             String passwordDB = sb.toString();
 
-            systemUser = new SystemUser(email, firstName, surname, username, passwordDB, currency, balance);
+            systemUser = new SystemUser(email, firstName, surname, username, passwordDB, balance, currency);
             systemUserGroup = new SystemUserGroup(username, "users");
 
             em.persist(systemUser);

@@ -21,8 +21,13 @@ public class InitialAdmin {
     @Inject
     AdminService adminService;
 
+    @Inject
+    UserService userService;
+
     @PostConstruct
     public void init() {
-        adminService.registerAdmin("admin1@admin.com", "admin", "admin", "admin1", "admin1", "GBP", 1000.0);
+        if (userService.getUserByUsername("admin1").isEmpty()) {
+            adminService.registerAdmin("admin1@admin.com", "admin", "admin", "admin1", "admin1", "GBP", 1000.0);
+        }
     }
 }

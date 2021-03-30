@@ -6,9 +6,8 @@
 package com.sd479.webapps2020.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +22,7 @@ import javax.validation.constraints.NotNull;
  */
 @NamedQueries({
     @NamedQuery(name = "findAllUsers", query = "SELECT u FROM SystemUser u"),
-    @NamedQuery(name = "findCurrentUser", query = "SELECT u FROM SystemUser u WHERE u.username=:username")
+    @NamedQuery(name = "findUserByUsername", query = "SELECT u FROM SystemUser u WHERE u.username LIKE :username")
 })
 
 @Entity
@@ -43,6 +42,7 @@ public class SystemUser implements Serializable {
     @NotNull
     String surname;
 
+    @Column(unique = true)
     @NotNull
     String username;
 
@@ -55,23 +55,18 @@ public class SystemUser implements Serializable {
     @NotNull
     String currency;
 
-    @NotNull
-    List<Request> requests = new ArrayList<>();
-
-    @NotNull
-    List<Transaction> transactions = new ArrayList<>();
-
+    //TRANSACTIONS NOT WORKING
     public SystemUser() {
     }
 
-    public SystemUser(String email, String firstName, String surname, String username, String password, String currency, double balance) {
+    public SystemUser(String email, String firstName, String surname, String username, String password, double balance, String currency) {
         this.email = email;
         this.firstName = firstName;
         this.surname = surname;
         this.username = username;
         this.password = password;
-        this.currency = currency;
         this.balance = balance;
+        this.currency = currency;
     }
 
     public Long getId() {
@@ -138,35 +133,17 @@ public class SystemUser implements Serializable {
         this.currency = currency;
     }
 
-    public List<Request> getRequests() {
-        return requests;
-    }
-
-    public void setRequests(List<Request> requests) {
-        this.requests = requests;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 19 * hash + Objects.hashCode(this.id);
-        hash = 19 * hash + Objects.hashCode(this.email);
-        hash = 19 * hash + Objects.hashCode(this.firstName);
-        hash = 19 * hash + Objects.hashCode(this.surname);
-        hash = 19 * hash + Objects.hashCode(this.username);
-        hash = 19 * hash + Objects.hashCode(this.password);
-        hash = 19 * hash + (int) (Double.doubleToLongBits(this.balance) ^ (Double.doubleToLongBits(this.balance) >>> 32));
-        hash = 19 * hash + Objects.hashCode(this.currency);
-        hash = 19 * hash + Objects.hashCode(this.requests);
-        hash = 19 * hash + Objects.hashCode(this.transactions);
+        hash = 97 * hash + Objects.hashCode(this.id);
+        hash = 97 * hash + Objects.hashCode(this.email);
+        hash = 97 * hash + Objects.hashCode(this.firstName);
+        hash = 97 * hash + Objects.hashCode(this.surname);
+        hash = 97 * hash + Objects.hashCode(this.username);
+        hash = 97 * hash + Objects.hashCode(this.password);
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.balance) ^ (Double.doubleToLongBits(this.balance) >>> 32));
+        hash = 97 * hash + Objects.hashCode(this.currency);
         return hash;
     }
 
@@ -204,12 +181,6 @@ public class SystemUser implements Serializable {
             return false;
         }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.requests, other.requests)) {
-            return false;
-        }
-        if (!Objects.equals(this.transactions, other.transactions)) {
             return false;
         }
         return true;
