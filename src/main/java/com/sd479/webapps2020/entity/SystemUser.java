@@ -6,6 +6,8 @@
 package com.sd479.webapps2020.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -50,16 +53,19 @@ public class SystemUser implements Serializable {
     String password;
 
     @NotNull
-    double balance;
+    @Column(precision = 12, scale = 2)
+    BigDecimal balance;
 
     @NotNull
     String currency;
 
-    //TRANSACTIONS NOT WORKING
+    @Version
+    private Long version;
+
     public SystemUser() {
     }
 
-    public SystemUser(String email, String firstName, String surname, String username, String password, double balance, String currency) {
+    public SystemUser(String email, String firstName, String surname, String username, String password, BigDecimal balance, String currency) {
         this.email = email;
         this.firstName = firstName;
         this.surname = surname;
@@ -67,6 +73,7 @@ public class SystemUser implements Serializable {
         this.password = password;
         this.balance = balance;
         this.currency = currency;
+        this.version = version;
     }
 
     public Long getId() {
@@ -117,12 +124,13 @@ public class SystemUser implements Serializable {
         this.password = password;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
+        System.out.println(this.balance);
         return balance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance.setScale(2, RoundingMode.FLOOR);
     }
 
     public String getCurrency() {
@@ -133,17 +141,26 @@ public class SystemUser implements Serializable {
         this.currency = currency;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.email);
-        hash = 97 * hash + Objects.hashCode(this.firstName);
-        hash = 97 * hash + Objects.hashCode(this.surname);
-        hash = 97 * hash + Objects.hashCode(this.username);
-        hash = 97 * hash + Objects.hashCode(this.password);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.balance) ^ (Double.doubleToLongBits(this.balance) >>> 32));
-        hash = 97 * hash + Objects.hashCode(this.currency);
+        int hash = 3;
+        hash = 11 * hash + Objects.hashCode(this.id);
+        hash = 11 * hash + Objects.hashCode(this.email);
+        hash = 11 * hash + Objects.hashCode(this.firstName);
+        hash = 11 * hash + Objects.hashCode(this.surname);
+        hash = 11 * hash + Objects.hashCode(this.username);
+        hash = 11 * hash + Objects.hashCode(this.password);
+        hash = 11 * hash + Objects.hashCode(this.balance);
+        hash = 11 * hash + Objects.hashCode(this.currency);
+        hash = 11 * hash + Objects.hashCode(this.version);
         return hash;
     }
 
@@ -159,9 +176,6 @@ public class SystemUser implements Serializable {
             return false;
         }
         final SystemUser other = (SystemUser) obj;
-        if (Double.doubleToLongBits(this.balance) != Double.doubleToLongBits(other.balance)) {
-            return false;
-        }
         if (!Objects.equals(this.email, other.email)) {
             return false;
         }
@@ -181,6 +195,12 @@ public class SystemUser implements Serializable {
             return false;
         }
         if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.balance, other.balance)) {
+            return false;
+        }
+        if (!Objects.equals(this.version, other.version)) {
             return false;
         }
         return true;

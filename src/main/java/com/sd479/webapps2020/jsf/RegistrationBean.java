@@ -5,9 +5,10 @@
  */
 package com.sd479.webapps2020.jsf;
 
-import com.sd479.webapps2020.ejb.AdminService;
-import com.sd479.webapps2020.ejb.UserService;
+import com.sd479.webapps2020.ejb.AdminEJB;
+import com.sd479.webapps2020.ejb.UserEJB;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -22,9 +23,9 @@ import javax.inject.Named;
 public class RegistrationBean implements Serializable {
 
     @EJB
-    UserService userService;
+    UserEJB userService;
     @EJB
-    AdminService adminService;
+    AdminEJB adminService;
 
     Currency[] currencies = Currency.values();
 
@@ -39,28 +40,28 @@ public class RegistrationBean implements Serializable {
     }
 
     public String registerUser() {
-        userService.registerUser(email, firstName, surname, username, password, currency, 1000.0);
+        userService.registerUser(email, firstName, surname, username, password, currency, new BigDecimal(1000));
         return "index";
     }
 
     public String registerAdmin() {
-        adminService.registerAdmin(email, firstName, surname, username, password, currency, 1000.0);
+        adminService.registerAdmin(email, firstName, surname, username, password, currency, new BigDecimal(1000));
         return "admin";
     }
 
-    public UserService getUserService() {
+    public UserEJB getUserService() {
         return userService;
     }
 
-    public void setUserService(UserService userService) {
+    public void setUserService(UserEJB userService) {
         this.userService = userService;
     }
 
-    public AdminService getAdminService() {
+    public AdminEJB getAdminService() {
         return adminService;
     }
 
-    public void setAdminService(AdminService adminService) {
+    public void setAdminService(AdminEJB adminService) {
         this.adminService = adminService;
     }
 

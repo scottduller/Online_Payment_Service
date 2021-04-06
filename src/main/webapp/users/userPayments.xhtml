@@ -8,18 +8,30 @@
     </h:head>
     <h:body>
         <h1>Online Payment Service</h1>
+        <h2>Balance: </h2>
+        <h:outputText value="#{userBean.currentUserBalance}">
+            <f:convertNumber type="currency" currencyCode="#{userBean.loggedInUser.currency}"/>
+        </h:outputText>
         <h2>Payments</h2>
         <h3>Payment Requests</h3>
-        <h:dataTable value="#{UserBean.currentUserRequests}" var="request">
-            <h:column>
-                <f:facet name="header">Username</f:facet>
-                    #{comment.visitDate}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Amount</f:facet>
-                    #{comment.comment_str}
-            </h:column>
-        </h:dataTable>
+        <h:form id="requestForm" >
+            <h:dataTable value="#{userRequestBean.userRequests}" var="userRequest">
+                <h:column>
+                    <f:facet name="header">Received From</f:facet>
+                        #{userRequest.requestFrom.username}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Amount</f:facet>
+                        #{userRequest.amount}
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Accept" action="#{userRequestBean.acceptRequest(userRequest, true)}"/>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Decline" action="#{userRequestBean.acceptRequest(userRequest, true)}"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
         <br/>
         <h3>Request / Make a Payment</h3>
         <h:link value="Make a payment" outcome="userMakePayment"/><br/>

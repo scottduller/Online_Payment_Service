@@ -4,11 +4,11 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Admin Transaction View</title>
+        <title>Admin User Accounts</title>
     </h:head>
     <h:body>
         <h1>Online Payment Service</h1>
-        <h2>View a User Transactions</h2>
+        <h2>View User Accounts</h2>
         <h:form>
             <h:panelGrid columns="3">
                 <h:outputLabel for="selectUsername" value="Select username: "/>
@@ -21,6 +21,8 @@
         </h:form><br/>
 
         <h:link value="Back to admin area" outcome="admin" /><br/><br/>
+
+        <h3>User Details</h3>
 
         <h:form>
             <h:panelGrid columns="2">
@@ -37,10 +39,28 @@
                 <h:outputText id="currency" value="#{adminUserAccountsBean.systemUser.currency}"/>
 
                 <h:outputLabel for="balance" value="Balance: "/>
-                <h:outputText id="balance" value="#{adminUserAccountsBean.systemUser.balance}"/>
+                <h:outputText id="balance" value="#{adminUserAccountsBean.usersBalance}"/>
             </h:panelGrid>
         </h:form><br/>
 
+        <h3>User Transactions</h3>
+
+        <h:dataTable value ="#{adminUserAccountsBean.userTransactions}" var="transaction">
+            <h:column>
+                <f:facet name="header">Transaction From</f:facet>
+                    #{transaction.payementFrom.username}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Transaction To</f:facet>
+                    #{transaction.paymentTo.username}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Amount</f:facet>
+                    #{transaction.amount}
+            </h:column>
+        </h:dataTable>
 
     </h:body>
 </html>

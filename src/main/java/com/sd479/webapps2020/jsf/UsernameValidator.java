@@ -5,7 +5,7 @@
  */
 package com.sd479.webapps2020.jsf;
 
-import com.sd479.webapps2020.ejb.UserService;
+import com.sd479.webapps2020.ejb.UserEJB;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -25,7 +25,7 @@ import javax.inject.Named;
 public class UsernameValidator implements Validator {
 
     @EJB
-    UserService userService;
+    UserEJB userService;
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {

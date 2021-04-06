@@ -6,17 +6,25 @@
 package com.sd479.webapps2020.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Scott
  */
-// NOTWORKING
+@NamedQueries({
+    @NamedQuery(name = "findTransactionsByUser", query = "SELECT t FROM UserTransaction t WHERE t.payementFrom=:user OR t.paymentTo=:user")
+})
 @Entity
 public class UserTransaction implements Serializable {
 
@@ -24,12 +32,19 @@ public class UserTransaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private double amount;
+    @ManyToOne
+    private SystemUser payementFrom;
+    @ManyToOne
+    private SystemUser paymentTo;
+    @Column(precision = 12, scale = 2)
+    private BigDecimal amount;
 
     public UserTransaction() {
     }
 
-    public UserTransaction(double amount, SystemUser transactionOwner, SystemUser userTransactionTo, SystemUser userTransactionFrom) {
+    public UserTransaction(SystemUser payementFrom, SystemUser paymentTo, BigDecimal amount) {
+        this.payementFrom = payementFrom;
+        this.paymentTo = paymentTo;
         this.amount = amount;
     }
 
@@ -41,19 +56,37 @@ public class UserTransaction implements Serializable {
         this.id = id;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount.setScale(2, RoundingMode.FLOOR);
+    }
+
+    public SystemUser getPayementFrom() {
+        return payementFrom;
+    }
+
+    public void setPayementFrom(SystemUser payementFrom) {
+        this.payementFrom = payementFrom;
+    }
+
+    public SystemUser getPaymentTo() {
+        return paymentTo;
+    }
+
+    public void setPaymentTo(SystemUser paymentTo) {
+        this.paymentTo = paymentTo;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 3;
         hash = 89 * hash + Objects.hashCode(this.id);
-        hash = 89 * hash + (int) (Double.doubleToLongBits(this.amount) ^ (Double.doubleToLongBits(this.amount) >>> 32));
+        hash = 89 * hash + Objects.hashCode(this.payementFrom);
+        hash = 89 * hash + Objects.hashCode(this.paymentTo);
+        hash = 89 * hash + Objects.hashCode(this.amount);
         return hash;
     }
 
@@ -69,10 +102,16 @@ public class UserTransaction implements Serializable {
             return false;
         }
         final UserTransaction other = (UserTransaction) obj;
-        if (Double.doubleToLongBits(this.amount) != Double.doubleToLongBits(other.amount)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.payementFrom, other.payementFrom)) {
+            return false;
+        }
+        if (!Objects.equals(this.paymentTo, other.paymentTo)) {
+            return false;
+        }
+        if (!Objects.equals(this.amount, other.amount)) {
             return false;
         }
         return true;

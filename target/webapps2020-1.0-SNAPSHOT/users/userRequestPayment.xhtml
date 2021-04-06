@@ -14,23 +14,30 @@ and open the template in the editor.
     </head>
     <body>
         <h1>Online Payment Service</h1>
+        <h2>Balance: </h2>
+        <h:outputText value="#{userBean.currentUserBalance}">
+            <f:convertNumber type="currency" currencyCode="#{userBean.loggedInUser.currency}"/>
+        </h:outputText>
         <h2>Payments</h2>
         <h3>Request a Payment</h3>
         <h:form>
             <h:panelGrid columns="3">
                 <h:outputLabel for="selectUsernameRequest" value="Select username: "/>
-                <h:selectOneMenu value="#{userBean.userName}" id="selectUsernameRequest" title="Select username" required="true" requiredMessage="Mandatory Field">
+                <h:selectOneMenu value="#{userRequestBean.userName}" id="selectUsernameRequest" title="Select username" required="true" requiredMessage="Mandatory Field">
                     <f:selectItems value="#{userBean.userList}" var="user" itemValue="#{user.username}" itemLabel="#{user.username}"/>
                 </h:selectOneMenu>
                 <h:message for="selectUsernameRequest" style="color:red"/>
 
-                <h:outputLabel for="selectAmountRequest" value="Amount: "/>
-                <h:inputText id="selectAmountRequest" title="Amount" required="true" requiredMessage="Mandatory Field"/>
-                <h:message for="selectAmountRequest" style="color:red"/>
+                <h:outputLabel for="selectAmountPayment" value="Amount: "/>
+                <h:inputText id="selectAmountPayment" value="#{userRequestBean.amount}" title="Amount" required="true"  requiredMessage="Mandatory Field" validatorMessage="Amount must be more than 0." converterMessage="Must include correct currency symbol and must be a valid currency. Example: £9.99, US$9.99, €9.99">
+                    <f:validateDoubleRange minimum="0.01"/>
+                    <f:convertNumber groupingUsed="true" currencyCode="#{userBean.loggedInUser.currency}" type="currency"/>
+                </h:inputText>
+                <h:message for="selectAmountPayment" style="color:red"/>
 
             </h:panelGrid>
             <br/>
-            <h:commandButton id="submitRequest" type="submit" value="Submit Request" title="Submit Request"/>&#xA0;
+            <h:commandButton id="submitRequest" action="#{userRequestBean.createRequest}" type="submit" value="Submit Request" title="Submit Request"/>&#xA0;
             <h:commandButton id="resetRequest" type="reset" value="Reset Form" title="Reset Request Form"/><br/>
             <br/>
             <h:link value="Back to user payments" outcome="userPayments" />

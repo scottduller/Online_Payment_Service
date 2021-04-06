@@ -6,16 +6,24 @@
 package com.sd479.webapps2020.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Scott
  */
+@NamedQueries({
+    @NamedQuery(name = "getRequestsByUser", query = "SELECT r FROM Request r WHERE r.requestTo=:user")
+})
 @Entity
 public class Request implements Serializable {
 
@@ -23,14 +31,19 @@ public class Request implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private SystemUser requestReceivedFrom;
-    private double amount;
+    @ManyToOne
+    private SystemUser requestFrom;
+    @ManyToOne
+    private SystemUser requestTo;
+    @Column(precision = 12, scale = 2)
+    private BigDecimal amount;
 
     public Request() {
     }
 
-    public Request(SystemUser requestReceivedFrom, double amount) {
-        this.requestReceivedFrom = requestReceivedFrom;
+    public Request(SystemUser requestFrom, SystemUser requestTo, BigDecimal amount) {
+        this.requestFrom = requestFrom;
+        this.requestTo = requestTo;
         this.amount = amount;
     }
 
@@ -42,28 +55,37 @@ public class Request implements Serializable {
         this.id = id;
     }
 
-    public SystemUser getRequestReceivedFrom() {
-        return requestReceivedFrom;
+    public SystemUser getRequestFrom() {
+        return requestFrom;
     }
 
-    public void setRequestReceivedFrom(SystemUser requestReceivedFrom) {
-        this.requestReceivedFrom = requestReceivedFrom;
+    public void setRequestFrom(SystemUser requestFrom) {
+        this.requestFrom = requestFrom;
     }
 
-    public double getAmount() {
+    public SystemUser getRequestTo() {
+        return requestTo;
+    }
+
+    public void setRequestTo(SystemUser requestTo) {
+        this.requestTo = requestTo;
+    }
+
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 5;
         hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.requestReceivedFrom);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.amount) ^ (Double.doubleToLongBits(this.amount) >>> 32));
+        hash = 97 * hash + Objects.hashCode(this.requestFrom);
+        hash = 97 * hash + Objects.hashCode(this.requestTo);
+        hash = 97 * hash + Objects.hashCode(this.amount);
         return hash;
     }
 
@@ -79,13 +101,16 @@ public class Request implements Serializable {
             return false;
         }
         final Request other = (Request) obj;
-        if (Double.doubleToLongBits(this.amount) != Double.doubleToLongBits(other.amount)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.requestReceivedFrom, other.requestReceivedFrom)) {
+        if (!Objects.equals(this.requestFrom, other.requestFrom)) {
+            return false;
+        }
+        if (!Objects.equals(this.requestTo, other.requestTo)) {
+            return false;
+        }
+        if (!Objects.equals(this.amount, other.amount)) {
             return false;
         }
         return true;
