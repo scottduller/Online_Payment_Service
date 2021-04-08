@@ -25,19 +25,15 @@ public class Seeder {
     @Inject
     UserEJB userService;
 
+    @Inject
+    TransactionEJB transactionService;
+
     @PostConstruct
     public void init() {
 
         // Initial Admin
         if (userService.getUserByUsername("admin1").isEmpty()) {
             adminService.registerAdmin("admin1@admin1.com", "admin1", "admin1", "admin1", "admin1", "GBP", new BigDecimal(1000));
-        }
-        // Development Users
-        if (userService.getUserByUsername("user1").isEmpty()) {
-            userService.registerUser("user1@user1.com", "user1", "user1", "user1", "user1", "USD", new BigDecimal(1000));
-        }
-        if (userService.getUserByUsername("user2").isEmpty()) {
-            userService.registerUser("user2@user2.com", "user2", "user2", "user2", "user2", "EUR", new BigDecimal(1000));
         }
     }
 }

@@ -125,7 +125,6 @@ public class SystemUser implements Serializable {
     }
 
     public BigDecimal getBalance() {
-        System.out.println(this.balance);
         return balance;
     }
 

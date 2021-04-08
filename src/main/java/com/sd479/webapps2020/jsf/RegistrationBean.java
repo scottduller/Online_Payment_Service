@@ -6,6 +6,7 @@
 package com.sd479.webapps2020.jsf;
 
 import com.sd479.webapps2020.ejb.AdminEJB;
+import com.sd479.webapps2020.ejb.TransactionEJB;
 import com.sd479.webapps2020.ejb.UserEJB;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -26,6 +27,8 @@ public class RegistrationBean implements Serializable {
     UserEJB userService;
     @EJB
     AdminEJB adminService;
+    @EJB
+    TransactionEJB transactionService;
 
     Currency[] currencies = Currency.values();
 
@@ -40,12 +43,14 @@ public class RegistrationBean implements Serializable {
     }
 
     public String registerUser() {
-        userService.registerUser(email, firstName, surname, username, password, currency, new BigDecimal(1000));
+        BigDecimal balance = transactionService.getCurrencyConversion("GBP", currency, new BigDecimal(1000));
+        userService.registerUser(email, firstName, surname, username, password, currency, balance);
         return "index";
     }
 
     public String registerAdmin() {
-        adminService.registerAdmin(email, firstName, surname, username, password, currency, new BigDecimal(1000));
+        BigDecimal balance = transactionService.getCurrencyConversion("GBP", currency, new BigDecimal(1000));
+        adminService.registerAdmin(email, firstName, surname, username, password, currency, balance);
         return "admin";
     }
 

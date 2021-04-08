@@ -37,15 +37,20 @@ public class UserTransaction implements Serializable {
     @ManyToOne
     private SystemUser paymentTo;
     @Column(precision = 12, scale = 2)
-    private BigDecimal amount;
+    private BigDecimal amountFrom;
+    @Column(precision = 12, scale = 2)
+    private BigDecimal amountTo;
 
+    //add curtecny for each transaction...add positives and negatives...
     public UserTransaction() {
     }
 
-    public UserTransaction(SystemUser payementFrom, SystemUser paymentTo, BigDecimal amount) {
+    public UserTransaction(SystemUser payementFrom, SystemUser paymentTo, BigDecimal amountFrom, BigDecimal amountTo) {
         this.payementFrom = payementFrom;
         this.paymentTo = paymentTo;
-        this.amount = amount;
+        this.amountFrom = amountFrom;
+        this.amountTo = amountTo;
+
     }
 
     public Long getId() {
@@ -56,12 +61,12 @@ public class UserTransaction implements Serializable {
         this.id = id;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getAmountFrom() {
+        return amountFrom;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount.setScale(2, RoundingMode.FLOOR);
+    public void setAmountFrom(BigDecimal amountFrom) {
+        this.amountFrom = amountFrom.setScale(2, RoundingMode.FLOOR);
     }
 
     public SystemUser getPayementFrom() {
@@ -80,13 +85,22 @@ public class UserTransaction implements Serializable {
         this.paymentTo = paymentTo;
     }
 
+    public BigDecimal getAmountTo() {
+        return amountTo;
+    }
+
+    public void setAmountTo(BigDecimal amountTo) {
+        this.amountTo = amountTo;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 89 * hash + Objects.hashCode(this.id);
-        hash = 89 * hash + Objects.hashCode(this.payementFrom);
-        hash = 89 * hash + Objects.hashCode(this.paymentTo);
-        hash = 89 * hash + Objects.hashCode(this.amount);
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        hash = 23 * hash + Objects.hashCode(this.payementFrom);
+        hash = 23 * hash + Objects.hashCode(this.paymentTo);
+        hash = 23 * hash + Objects.hashCode(this.amountFrom);
+        hash = 23 * hash + Objects.hashCode(this.amountTo);
         return hash;
     }
 
@@ -111,7 +125,10 @@ public class UserTransaction implements Serializable {
         if (!Objects.equals(this.paymentTo, other.paymentTo)) {
             return false;
         }
-        if (!Objects.equals(this.amount, other.amount)) {
+        if (!Objects.equals(this.amountFrom, other.amountFrom)) {
+            return false;
+        }
+        if (!Objects.equals(this.amountTo, other.amountTo)) {
             return false;
         }
         return true;
