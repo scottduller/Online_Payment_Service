@@ -10,6 +10,7 @@ import com.sd479.webapps2020.dao.UserTransactionDao;
 import com.sd479.webapps2020.entity.SystemUser;
 import com.sd479.webapps2020.entity.UserTransaction;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -48,6 +49,51 @@ public class UserTransactionsBean {
         SystemUser currentUser = systemUserDao.findSystemUserByUsername(currentUserUsername);
 
         return currentUser;
+    }
+
+    public SystemUserDao getSystemUserDao() {
+        return systemUserDao;
+    }
+
+    public void setSystemUserDao(SystemUserDao systemUserDao) {
+        this.systemUserDao = systemUserDao;
+    }
+
+    public UserTransactionDao getUserTransactionDao() {
+        return userTransactionDao;
+    }
+
+    public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
+        this.userTransactionDao = userTransactionDao;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.systemUserDao);
+        hash = 79 * hash + Objects.hashCode(this.userTransactionDao);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UserTransactionsBean other = (UserTransactionsBean) obj;
+        if (!Objects.equals(this.systemUserDao, other.systemUserDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.userTransactionDao, other.userTransactionDao)) {
+            return false;
+        }
+        return true;
     }
 
 }

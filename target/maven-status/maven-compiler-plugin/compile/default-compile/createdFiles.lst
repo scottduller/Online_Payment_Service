@@ -7,6 +7,7 @@ com\sd479\webapps2020\entity\SystemUser_.class
 com\sd479\webapps2020\entity\UserTransaction.class
 com\sd479\webapps2020\dao\JpaSystemUserGroupDao.class
 com\sd479\webapps2020\conversion\RSConversionApplication.class
+com\sd479\webapps2020\Seeder.class
 com\sd479\webapps2020\dao\SystemUserDao.class
 com\sd479\webapps2020\jsf\UserBean.class
 com\sd479\webapps2020\entity\UserTransaction_.class

@@ -12,21 +12,33 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 
 /**
  *
  * @author Scott
  */
+@Stateless
+@TransactionAttribute(REQUIRED)
 public class JpaSystemUserDao extends JpaDao<SystemUser> implements SystemUserDao {
 
     @Override
-    public List findAllSystemUsers() {
-        return (List) em.createNamedQuery("findAllSystemUsers").getResultList();
+    public List<SystemUser> findAllSystemUsers() {
+        return em.createNamedQuery("findAllSystemUsers").getResultList();
+
     }
 
     @Override
     public SystemUser findSystemUserByUsername(String username) {
-        return (SystemUser) em.find(entityClass, username);
+        List<SystemUser> systemUsers = em.createNamedQuery("findSystemUserByUsername").setParameter("username", username).getResultList();
+
+        if (systemUsers.isEmpty()) {
+            return null;
+        }
+
+        return systemUsers.get(0);
     }
 
     @Override

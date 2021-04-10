@@ -12,40 +12,35 @@ import javax.persistence.PersistenceContext;
 /**
  *
  * @author Scott
+ * @param <T>
  */
-public abstract class JpaDao<E> implements Dao<E> {
-
-    Class entityClass;
+public abstract class JpaDao<T> implements Dao<T> {
 
     @PersistenceContext
     EntityManager em;
 
+    Class entityClass;
+
     public JpaDao() {
-        ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
-        this.entityClass = (Class) genericSuperclass.getActualTypeArguments()[0];
+        this.entityClass = (Class) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     @Override
-    public void persist(E entity) {
+    public void persist(T entity) {
         em.persist(entity);
     }
 
     @Override
-    public void remove(E entity) {
+    public void remove(T entity) {
+        if (!em.contains(entity)) {
+            entity = em.merge(entity);
+        }
         em.remove(entity);
     }
 
     @Override
-    public E findById(Long id) {
-        return (E) em.find(entityClass, id);
-    }
-
-    public Class getEntityClass() {
-        return entityClass;
-    }
-
-    public void setEntityClass(Class entityClass) {
-        this.entityClass = entityClass;
+    public T findById(Long id) {
+        return (T) em.find(entityClass, id);
     }
 
     public EntityManager getEm() {

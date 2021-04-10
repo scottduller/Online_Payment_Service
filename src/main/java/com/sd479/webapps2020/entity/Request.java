@@ -113,4 +113,15 @@ public class Request implements Serializable {
         return true;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Request{id=").append(id);
+        sb.append(", usernameFrom=").append(usernameFrom);
+        sb.append(", usernameTo=").append(usernameTo);
+        sb.append(", amount=").append(amount);
+        sb.append('}');
+        return sb.toString();
+    }
+
 }

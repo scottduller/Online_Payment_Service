@@ -13,6 +13,7 @@ import com.sd479.webapps2020.entity.SystemUser;
 import com.sd479.webapps2020.entity.UserTransaction;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -46,9 +47,15 @@ public class UserRequestBean {
         SystemUser currentUser = getLoggedInUser();
         SystemUser toUser = systemUserDao.findSystemUserByUsername(userName);
 
-        Request request = new Request(currentUser.getUsername(), toUser.getUsername(), amount);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        BigDecimal convertedAmount = userTransactionDao.getCurrencyConversion(currentUser.getCurrency(), toUser.getCurrency(), amount);
+
+        Request request = new Request(currentUser.getUsername(), toUser.getUsername(), convertedAmount);
 
         requestDao.persist(request);
+        facesContext.addMessage(null, new FacesMessage("Request Sent"));
+
     }
 
     public List<Request> getUserRequests() {
@@ -60,16 +67,21 @@ public class UserRequestBean {
         SystemUser fromUser = systemUserDao.findSystemUserByUsername(request.getUsernameFrom());
         SystemUser toUser = systemUserDao.findSystemUserByUsername(request.getUsernameTo());
 
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
         if (accepted) {
             if (toUser.getBalance().compareTo(request.getAmount()) >= 0) {
                 makePayment(toUser, fromUser, request.getAmount());
+
                 requestDao.remove(request);
+                facesContext.addMessage(null, new FacesMessage("Payment Made"));
+
             } else {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
                 facesContext.addMessage(null, new FacesMessage("Balance is too low"));
             }
         } else {
             requestDao.remove(request);
+            facesContext.addMessage(null, new FacesMessage("Request Declined"));
         }
     }
 
@@ -98,6 +110,87 @@ public class UserRequestBean {
         SystemUser currentUser = systemUserDao.findSystemUserByUsername(currentUserUsername);
 
         return currentUser;
+    }
+
+    public SystemUserDao getSystemUserDao() {
+        return systemUserDao;
+    }
+
+    public void setSystemUserDao(SystemUserDao systemUserDao) {
+        this.systemUserDao = systemUserDao;
+    }
+
+    public UserTransactionDao getUserTransactionDao() {
+        return userTransactionDao;
+    }
+
+    public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
+        this.userTransactionDao = userTransactionDao;
+    }
+
+    public RequestDao getRequestDao() {
+        return requestDao;
+    }
+
+    public void setRequestDao(RequestDao requestDao) {
+        this.requestDao = requestDao;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + Objects.hashCode(this.systemUserDao);
+        hash = 67 * hash + Objects.hashCode(this.userTransactionDao);
+        hash = 67 * hash + Objects.hashCode(this.requestDao);
+        hash = 67 * hash + Objects.hashCode(this.userName);
+        hash = 67 * hash + Objects.hashCode(this.amount);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UserRequestBean other = (UserRequestBean) obj;
+        if (!Objects.equals(this.userName, other.userName)) {
+            return false;
+        }
+        if (!Objects.equals(this.systemUserDao, other.systemUserDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.userTransactionDao, other.userTransactionDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.requestDao, other.requestDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.amount, other.amount)) {
+            return false;
+        }
+        return true;
     }
 
 }

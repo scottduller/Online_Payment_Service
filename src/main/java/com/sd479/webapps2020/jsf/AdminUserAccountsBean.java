@@ -58,6 +58,38 @@ public class AdminUserAccountsBean {
         return null;
     }
 
+    public SystemUserDao getSystemUserDao() {
+        return systemUserDao;
+    }
+
+    public void setSystemUserDao(SystemUserDao systemUserDao) {
+        this.systemUserDao = systemUserDao;
+    }
+
+    public UserTransactionDao getUserTransactionDao() {
+        return userTransactionDao;
+    }
+
+    public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
+        this.userTransactionDao = userTransactionDao;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public SystemUser getSystemUser() {
+        return systemUser;
+    }
+
+    public void setSystemUser(SystemUser systemUser) {
+        this.systemUser = systemUser;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;

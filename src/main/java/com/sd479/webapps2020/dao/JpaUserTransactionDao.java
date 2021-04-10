@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -15,6 +18,8 @@ import javax.json.JsonReader;
  *
  * @author Scott
  */
+@Stateless
+@TransactionAttribute(REQUIRED)
 public class JpaUserTransactionDao extends JpaDao<UserTransaction> implements UserTransactionDao {
 
     @Override

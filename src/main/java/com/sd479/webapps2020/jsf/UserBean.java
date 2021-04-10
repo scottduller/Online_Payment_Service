@@ -8,6 +8,7 @@ package com.sd479.webapps2020.jsf;
 import com.sd479.webapps2020.dao.SystemUserDao;
 import com.sd479.webapps2020.dao.UserTransactionDao;
 import com.sd479.webapps2020.entity.SystemUser;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import javax.ejb.EJB;
@@ -60,6 +61,10 @@ public class UserBean {
         SystemUser currentUser = systemUserDao.findSystemUserByUsername(currentUserUsername);
 
         return currentUser;
+    }
+
+    public BigDecimal getCurrentUserBalance() {
+        return getLoggedInUser().getBalance();
     }
 
     public SystemUserDao getSystemUserDao() {

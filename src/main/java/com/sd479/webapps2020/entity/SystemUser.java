@@ -24,7 +24,8 @@ import javax.validation.constraints.NotNull;
  * @author Scott
  */
 @NamedQueries({
-    @NamedQuery(name = "findAllSystemUsers", query = "SELECT u FROM SystemUser u"),})
+    @NamedQuery(name = "findAllSystemUsers", query = "SELECT u FROM SystemUser u"),
+    @NamedQuery(name = "findSystemUserByUsername", query = "SELECT u FROM SystemUser u WHERE u.username=:username"),})
 
 @Entity
 public class SystemUser implements Serializable {
