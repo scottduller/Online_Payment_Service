@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -48,14 +50,24 @@ public class UserRequestBean {
 
     public List<Request> getUserRequests() {
         SystemUser currentUser = userService.getLoggedInUser();
-        return requestService.getRequestsByUser(currentUser);
+        return requestService.getRequestsByUsername(currentUser.getUsername());
     }
 
     public void acceptRequest(Request request, boolean accepted) {
+        SystemUser toUser = userService.getUserByUsername(request.getUsernameTo()).get(0);
+        SystemUser fromUser = userService.getUserByUsername(request.getUsernameFrom()).get(0);
+
         if (accepted) {
-            transactionService.makePayment(request.getRequestTo().getId(), request.getRequestFrom().getId(), request.getAmount());
+            if (toUser.getBalance().compareTo(request.getAmount()) >= 0) {
+                transactionService.makePayment(toUser.getId(), fromUser.getId(), request.getAmount());
+                requestService.deleteRequest(request);
+            } else {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                facesContext.addMessage(null, new FacesMessage("Balance is too low"));
+            }
+        } else {
+            requestService.deleteRequest(request);
         }
-        requestService.deleteRequest(request);
     }
 
     public UserEJB getUserService() {

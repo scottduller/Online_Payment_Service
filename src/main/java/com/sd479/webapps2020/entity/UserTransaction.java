@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -23,7 +22,7 @@ import javax.persistence.NamedQuery;
  * @author Scott
  */
 @NamedQueries({
-    @NamedQuery(name = "findTransactionsByUser", query = "SELECT t FROM UserTransaction t WHERE t.payementFrom=:user OR t.paymentTo=:user")
+    @NamedQuery(name = "findTransactionsByUser", query = "SELECT t FROM UserTransaction t WHERE t.usernameFrom=:username OR t.usernameTo=:username")
 })
 @Entity
 public class UserTransaction implements Serializable {
@@ -32,25 +31,25 @@ public class UserTransaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
-    private SystemUser payementFrom;
-    @ManyToOne
-    private SystemUser paymentTo;
+    private String usernameFrom;
+    private String usernameTo;
+    private String currencyFrom;
+    private String currencyTo;
     @Column(precision = 12, scale = 2)
     private BigDecimal amountFrom;
     @Column(precision = 12, scale = 2)
     private BigDecimal amountTo;
 
-    //add curtecny for each transaction...add positives and negatives...
     public UserTransaction() {
     }
 
-    public UserTransaction(SystemUser payementFrom, SystemUser paymentTo, BigDecimal amountFrom, BigDecimal amountTo) {
-        this.payementFrom = payementFrom;
-        this.paymentTo = paymentTo;
+    public UserTransaction(String usernameFrom, String usernameTo, String currencyFrom, String currencyTo, BigDecimal amountFrom, BigDecimal amountTo) {
+        this.usernameFrom = usernameFrom;
+        this.usernameTo = usernameTo;
+        this.currencyFrom = currencyFrom;
+        this.currencyTo = currencyTo;
         this.amountFrom = amountFrom;
         this.amountTo = amountTo;
-
     }
 
     public Long getId() {
@@ -69,20 +68,20 @@ public class UserTransaction implements Serializable {
         this.amountFrom = amountFrom.setScale(2, RoundingMode.FLOOR);
     }
 
-    public SystemUser getPayementFrom() {
-        return payementFrom;
+    public String getUsernameFrom() {
+        return usernameFrom;
     }
 
-    public void setPayementFrom(SystemUser payementFrom) {
-        this.payementFrom = payementFrom;
+    public void setUsernameFrom(String usernameFrom) {
+        this.usernameFrom = usernameFrom;
     }
 
-    public SystemUser getPaymentTo() {
-        return paymentTo;
+    public String getUsernameTo() {
+        return usernameTo;
     }
 
-    public void setPaymentTo(SystemUser paymentTo) {
-        this.paymentTo = paymentTo;
+    public void setUsernameTo(String usernameTo) {
+        this.usernameTo = usernameTo;
     }
 
     public BigDecimal getAmountTo() {
@@ -93,14 +92,32 @@ public class UserTransaction implements Serializable {
         this.amountTo = amountTo;
     }
 
+    public String getCurrencyFrom() {
+        return currencyFrom;
+    }
+
+    public void setCurrencyFrom(String currencyFrom) {
+        this.currencyFrom = currencyFrom;
+    }
+
+    public String getCurrencyTo() {
+        return currencyTo;
+    }
+
+    public void setCurrencyTo(String currencyTo) {
+        this.currencyTo = currencyTo;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.id);
-        hash = 23 * hash + Objects.hashCode(this.payementFrom);
-        hash = 23 * hash + Objects.hashCode(this.paymentTo);
-        hash = 23 * hash + Objects.hashCode(this.amountFrom);
-        hash = 23 * hash + Objects.hashCode(this.amountTo);
+        hash = 19 * hash + Objects.hashCode(this.id);
+        hash = 19 * hash + Objects.hashCode(this.usernameFrom);
+        hash = 19 * hash + Objects.hashCode(this.usernameTo);
+        hash = 19 * hash + Objects.hashCode(this.currencyFrom);
+        hash = 19 * hash + Objects.hashCode(this.currencyTo);
+        hash = 19 * hash + Objects.hashCode(this.amountFrom);
+        hash = 19 * hash + Objects.hashCode(this.amountTo);
         return hash;
     }
 
@@ -116,13 +133,19 @@ public class UserTransaction implements Serializable {
             return false;
         }
         final UserTransaction other = (UserTransaction) obj;
+        if (!Objects.equals(this.usernameFrom, other.usernameFrom)) {
+            return false;
+        }
+        if (!Objects.equals(this.usernameTo, other.usernameTo)) {
+            return false;
+        }
+        if (!Objects.equals(this.currencyFrom, other.currencyFrom)) {
+            return false;
+        }
+        if (!Objects.equals(this.currencyTo, other.currencyTo)) {
+            return false;
+        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.payementFrom, other.payementFrom)) {
-            return false;
-        }
-        if (!Objects.equals(this.paymentTo, other.paymentTo)) {
             return false;
         }
         if (!Objects.equals(this.amountFrom, other.amountFrom)) {

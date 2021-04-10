@@ -48,7 +48,7 @@ public class TransactionEJB {
 
         to.setBalance(to.getBalance().add(convertedAmount));
 
-        UserTransaction transaction = new UserTransaction(from, to, amount, convertedAmount);
+        UserTransaction transaction = new UserTransaction(from.getUsername(), to.getUsername(), from.getCurrency(), to.getCurrency(), amount, convertedAmount);
 
         em.persist(from);
         em.persist(to);
@@ -56,7 +56,7 @@ public class TransactionEJB {
     }
 
     public List<UserTransaction> getTransactionsByUser(SystemUser user) {
-        List<UserTransaction> transactions = em.createNamedQuery("findTransactionsByUser").setParameter("user", user).getResultList();
+        List<UserTransaction> transactions = em.createNamedQuery("findTransactionsByUser").setParameter("username", user.getUsername()).getResultList();
         return transactions;
     }
 

@@ -3,6 +3,7 @@ com\sd479\webapps2020\jsf\Currency.class
 com\sd479\webapps2020\entity\SystemUser_.class
 com\sd479\webapps2020\entity\UserTransaction.class
 com\sd479\webapps2020\conversion\RSConversionApplication.class
+com\sd479\webapps2020\Seeder.class
 com\sd479\webapps2020\jsf\UserBean.class
 com\sd479\webapps2020\ejb\UserEJB.class
 com\sd479\webapps2020\entity\UserTransaction_.class
@@ -17,7 +18,6 @@ com\sd479\webapps2020\entity\SystemUserGroup.class
 com\sd479\webapps2020\jsf\UserTransactionsBean.class
 com\sd479\webapps2020\jsf\AdminUserAccountsBean.class
 com\sd479\webapps2020\entity\Request.class
-com\sd479\webapps2020\ejb\Seeder.class
 com\sd479\webapps2020\jsf\RegistrationBean.class
 com\sd479\webapps2020\entity\SystemUserGroup_.class
 com\sd479\webapps2020\conversion\RSConversion.class

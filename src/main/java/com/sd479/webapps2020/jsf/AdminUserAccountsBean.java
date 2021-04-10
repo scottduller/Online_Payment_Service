@@ -35,6 +35,10 @@ public class AdminUserAccountsBean {
     public AdminUserAccountsBean() {
     }
 
+    public void setSelectedUser() {
+        systemUser = userService.getUserByUsername(userName).get(0);
+    }
+
     public String getUserName() {
         return userName;
     }

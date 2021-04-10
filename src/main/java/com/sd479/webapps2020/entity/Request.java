@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -22,7 +21,7 @@ import javax.persistence.NamedQuery;
  * @author Scott
  */
 @NamedQueries({
-    @NamedQuery(name = "getRequestsByUser", query = "SELECT r FROM Request r WHERE r.requestTo=:user")
+    @NamedQuery(name = "getRequestsByUsername", query = "SELECT r FROM Request r WHERE r.usernameTo=:username")
 })
 @Entity
 public class Request implements Serializable {
@@ -31,19 +30,17 @@ public class Request implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
-    private SystemUser requestFrom;
-    @ManyToOne
-    private SystemUser requestTo;
+    private String usernameFrom;
+    private String usernameTo;
     @Column(precision = 12, scale = 2)
     private BigDecimal amount;
 
     public Request() {
     }
 
-    public Request(SystemUser requestFrom, SystemUser requestTo, BigDecimal amount) {
-        this.requestFrom = requestFrom;
-        this.requestTo = requestTo;
+    public Request(String requestFrom, String requestTo, BigDecimal amount) {
+        this.usernameFrom = requestFrom;
+        this.usernameTo = requestTo;
         this.amount = amount;
     }
 
@@ -55,20 +52,20 @@ public class Request implements Serializable {
         this.id = id;
     }
 
-    public SystemUser getRequestFrom() {
-        return requestFrom;
+    public String getUsernameFrom() {
+        return usernameFrom;
     }
 
-    public void setRequestFrom(SystemUser requestFrom) {
-        this.requestFrom = requestFrom;
+    public void setUsernameFrom(String usernameFrom) {
+        this.usernameFrom = usernameFrom;
     }
 
-    public SystemUser getRequestTo() {
-        return requestTo;
+    public String getUsernameTo() {
+        return usernameTo;
     }
 
-    public void setRequestTo(SystemUser requestTo) {
-        this.requestTo = requestTo;
+    public void setUsernameTo(String usernameTo) {
+        this.usernameTo = usernameTo;
     }
 
     public BigDecimal getAmount() {
@@ -83,8 +80,8 @@ public class Request implements Serializable {
     public int hashCode() {
         int hash = 5;
         hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.requestFrom);
-        hash = 97 * hash + Objects.hashCode(this.requestTo);
+        hash = 97 * hash + Objects.hashCode(this.usernameFrom);
+        hash = 97 * hash + Objects.hashCode(this.usernameTo);
         hash = 97 * hash + Objects.hashCode(this.amount);
         return hash;
     }
@@ -104,10 +101,10 @@ public class Request implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.requestFrom, other.requestFrom)) {
+        if (!Objects.equals(this.usernameFrom, other.usernameFrom)) {
             return false;
         }
-        if (!Objects.equals(this.requestTo, other.requestTo)) {
+        if (!Objects.equals(this.usernameTo, other.usernameTo)) {
             return false;
         }
         if (!Objects.equals(this.amount, other.amount)) {

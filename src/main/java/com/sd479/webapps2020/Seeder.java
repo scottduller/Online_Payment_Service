@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sd479.webapps2020.ejb;
+package com.sd479.webapps2020;
 
+import com.sd479.webapps2020.ejb.AdminEJB;
+import com.sd479.webapps2020.ejb.TransactionEJB;
+import com.sd479.webapps2020.ejb.UserEJB;
 import java.math.BigDecimal;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;

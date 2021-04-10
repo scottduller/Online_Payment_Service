@@ -18,17 +18,18 @@
             <h:dataTable value="#{userRequestBean.userRequests}" var="userRequest">
                 <h:column>
                     <f:facet name="header">Received From</f:facet>
-                        #{userRequest.requestFrom.username}
+                        #{userRequest.usernameFrom}
                 </h:column>
                 <h:column>
                     <f:facet name="header">Amount</f:facet>
                         #{userRequest.amount}
                 </h:column>
                 <h:column>
+                    <!-- NEED TO ADD VALIDATION FOR ACCEPTING PAYMENTS (MAY NOT HAVE THE MONEY) -->
                     <h:commandButton value="Accept" action="#{userRequestBean.acceptRequest(userRequest, true)}"/>
                 </h:column>
                 <h:column>
-                    <h:commandButton value="Decline" action="#{userRequestBean.acceptRequest(userRequest, true)}"/>
+                    <h:commandButton value="Decline" action="#{userRequestBean.acceptRequest(userRequest, false)}"/>
                 </h:column>
             </h:dataTable>
         </h:form>

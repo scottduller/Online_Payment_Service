@@ -16,7 +16,7 @@
         <h:dataTable value ="#{userTransactionsBean.transactions}" var="transaction">
             <h:column>
                 <f:facet name="header">From</f:facet>
-                #{transaction.payementFrom.username} (#{transaction.payementFrom.currency})
+                #{transaction.usernameFrom} (#{transaction.currencyFrom})
             </h:column>
             <h:column>
                 <f:facet name="header">Amount</f:facet>
@@ -24,7 +24,7 @@
             </h:column>
             <h:column>
                 <f:facet name="header">To</f:facet>
-                #{transaction.paymentTo.username} (#{transaction.paymentTo.currency})
+                #{transaction.usernameTo} (#{transaction.currencyTo})
             </h:column>
 
             <h:column>

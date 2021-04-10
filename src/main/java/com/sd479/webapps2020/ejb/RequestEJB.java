@@ -33,8 +33,8 @@ public class RequestEJB {
     @PersistenceContext
     EntityManager em;
 
-    public List<Request> getRequestsByUser(SystemUser user) {
-        List<Request> request = em.createNamedQuery("getRequestsByUser").setParameter("user", user).getResultList();
+    public List<Request> getRequestsByUsername(String username) {
+        List<Request> request = em.createNamedQuery("getRequestsByUsername").setParameter("username", username).getResultList();
         return request;
     }
 
@@ -49,7 +49,7 @@ public class RequestEJB {
 
         BigDecimal amountConverted = getCurrencyConversion(from, to, amount);
 
-        Request request = new Request(from, to, amountConverted);
+        Request request = new Request(from.getUsername(), to.getUsername(), amountConverted);
 
         em.persist(request);
     }
