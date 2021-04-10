@@ -21,7 +21,7 @@ import javax.persistence.NamedQuery;
  * @author Scott
  */
 @NamedQueries({
-    @NamedQuery(name = "getRequestsByUsername", query = "SELECT r FROM Request r WHERE r.usernameTo=:username")
+    @NamedQuery(name = "findRequestsByUsernameTo", query = "SELECT r FROM Request r WHERE r.usernameTo=:username")
 })
 @Entity
 public class Request implements Serializable {
