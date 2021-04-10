@@ -5,21 +5,21 @@
  */
 package com.sd479.webapps2020.dao;
 
-import java.math.BigDecimal;
+import com.sd479.webapps2020.entity.SystemUser;
 import java.util.List;
 
 /**
  *
  * @author Scott
  */
-public interface SystemUserDao extends Dao {
+public interface SystemUserDao extends Dao<SystemUser> {
 
-    List findAllSystemUsers();
+    List<SystemUser> findAllSystemUsers();
 
-    E findSystemUserByUsername(String username);
+    SystemUser findSystemUserByUsername(String username);
 
-    void registerSystemUser(E systemUser);
+    void registerSystemUser(SystemUser systemUser);
 
-    void updateBalance(E systemUser, BigDecimal newBalance);
+    void update(SystemUser systemUser);
 
 }

@@ -5,12 +5,13 @@
  */
 package com.sd479.webapps2020.jsf;
 
-import com.sd479.webapps2020.ejb.TransactionEJB;
-import com.sd479.webapps2020.ejb.UserEJB;
+import com.sd479.webapps2020.dao.SystemUserDao;
+import com.sd479.webapps2020.dao.UserTransactionDao;
 import com.sd479.webapps2020.entity.SystemUser;
 import com.sd479.webapps2020.entity.UserTransaction;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -23,11 +24,11 @@ import javax.inject.Named;
 @RequestScoped
 public class AdminUserAccountsBean {
 
-    @EJB
-    UserEJB userService;
+    @EJB(name = "systemUserDao")
+    SystemUserDao systemUserDao;
 
-    @EJB
-    TransactionEJB transactionService;
+    @EJB(name = "userTransactionDao")
+    UserTransactionDao userTransactionDao;
 
     private String userName;
     private SystemUser systemUser;
@@ -36,57 +37,62 @@ public class AdminUserAccountsBean {
     }
 
     public void setSelectedUser() {
-        systemUser = userService.getUserByUsername(userName).get(0);
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+        systemUser = systemUserDao.findSystemUserByUsername(userName);
     }
 
     public List<SystemUser> getUserList() {
-        return userService.getUserList();
-    }
-
-    public UserEJB getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserEJB userService) {
-        this.userService = userService;
-    }
-
-    public SystemUser getSystemUser() {
-        return systemUser;
-    }
-
-    public void setSystemUser() {
-        this.systemUser = userService.getUserByUsername(userName).get(0);
-    }
-
-    public TransactionEJB getTransactionService() {
-        return transactionService;
-    }
-
-    public void setTransactionService(TransactionEJB transactionService) {
-        this.transactionService = transactionService;
+        return systemUserDao.findAllSystemUsers();
     }
 
     public BigDecimal getUsersBalance() {
         if (systemUser != null) {
-            return transactionService.getBalance(systemUser.getId());
+            return systemUser.getBalance();
         }
         return null;
     }
 
     public List<UserTransaction> getUserTransactions() {
         if (systemUser != null) {
-            return transactionService.getTransactionsByUser(systemUser);
+            return userTransactionDao.findUserTransactionsByUsername(userName);
         }
         return null;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.systemUserDao);
+        hash = 37 * hash + Objects.hashCode(this.userTransactionDao);
+        hash = 37 * hash + Objects.hashCode(this.userName);
+        hash = 37 * hash + Objects.hashCode(this.systemUser);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AdminUserAccountsBean other = (AdminUserAccountsBean) obj;
+        if (!Objects.equals(this.userName, other.userName)) {
+            return false;
+        }
+        if (!Objects.equals(this.systemUserDao, other.systemUserDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.userTransactionDao, other.userTransactionDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.systemUser, other.systemUser)) {
+            return false;
+        }
+        return true;
     }
 
 }

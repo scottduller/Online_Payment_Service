@@ -5,7 +5,7 @@
  */
 package com.sd479.webapps2020.jsf;
 
-import com.sd479.webapps2020.ejb.UserEJB;
+import com.sd479.webapps2020.dao.SystemUserDao;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -24,13 +24,13 @@ import javax.inject.Named;
 @RequestScoped
 public class UsernameValidator implements Validator {
 
-    @EJB
-    UserEJB userService;
+    @EJB(name = "systemUserDao")
+    SystemUserDao systemUserDao;
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
-        if (!userService.getUserByUsername(value.toString()).isEmpty()) {
+        if (systemUserDao.findSystemUserByUsername(value.toString()) != null) {
             throw new ValidatorException(new FacesMessage("Username already exists"));
         }
     }

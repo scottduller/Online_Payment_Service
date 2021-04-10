@@ -5,11 +5,12 @@
  */
 package com.sd479.webapps2020.jsf;
 
-import com.sd479.webapps2020.ejb.RequestEJB;
-import com.sd479.webapps2020.ejb.TransactionEJB;
-import com.sd479.webapps2020.ejb.UserEJB;
+import com.sd479.webapps2020.dao.RequestDao;
+import com.sd479.webapps2020.dao.SystemUserDao;
+import com.sd479.webapps2020.dao.UserTransactionDao;
 import com.sd479.webapps2020.entity.Request;
 import com.sd479.webapps2020.entity.SystemUser;
+import com.sd479.webapps2020.entity.UserTransaction;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
@@ -26,14 +27,14 @@ import javax.inject.Named;
 @RequestScoped
 public class UserRequestBean {
 
-    @EJB
-    UserEJB userService;
+    @EJB(name = "systemUserDao")
+    SystemUserDao systemUserDao;
 
-    @EJB
-    RequestEJB requestService;
+    @EJB(name = "userTransactionDao")
+    UserTransactionDao userTransactionDao;
 
-    @EJB
-    TransactionEJB transactionService;
+    @EJB(name = "requestDao")
+    RequestDao requestDao;
 
     private String userName;
     private BigDecimal amount;
@@ -42,64 +43,61 @@ public class UserRequestBean {
     }
 
     public void createRequest() {
-        SystemUser currentUser = userService.getLoggedInUser();
-        SystemUser toUser = userService.getUserByUsername(userName).get(0);
+        SystemUser currentUser = getLoggedInUser();
+        SystemUser toUser = systemUserDao.findSystemUserByUsername(userName);
 
-        requestService.postRequest(currentUser.getId(), toUser.getId(), amount);
+        Request request = new Request(currentUser.getUsername(), toUser.getUsername(), amount);
+
+        requestDao.persist(request);
     }
 
     public List<Request> getUserRequests() {
-        SystemUser currentUser = userService.getLoggedInUser();
-        return requestService.getRequestsByUsername(currentUser.getUsername());
+        SystemUser currentUser = getLoggedInUser();
+        return requestDao.findRequestsByUsernameTo(currentUser.getUsername());
     }
 
     public void acceptRequest(Request request, boolean accepted) {
-        SystemUser toUser = userService.getUserByUsername(request.getUsernameTo()).get(0);
-        SystemUser fromUser = userService.getUserByUsername(request.getUsernameFrom()).get(0);
+        SystemUser fromUser = systemUserDao.findSystemUserByUsername(request.getUsernameFrom());
+        SystemUser toUser = systemUserDao.findSystemUserByUsername(request.getUsernameTo());
 
         if (accepted) {
             if (toUser.getBalance().compareTo(request.getAmount()) >= 0) {
-                transactionService.makePayment(toUser.getId(), fromUser.getId(), request.getAmount());
-                requestService.deleteRequest(request);
+                makePayment(toUser, fromUser, request.getAmount());
+                requestDao.remove(request);
             } else {
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 facesContext.addMessage(null, new FacesMessage("Balance is too low"));
             }
         } else {
-            requestService.deleteRequest(request);
+            requestDao.remove(request);
         }
     }
 
-    public UserEJB getUserService() {
-        return userService;
+    public void makePayment(SystemUser from, SystemUser to, BigDecimal amount) {
+        BigDecimal convertedAmount = userTransactionDao.getCurrencyConversion(from.getCurrency(), to.getCurrency(), amount);
+
+        BigDecimal fromNewBalance = from.getBalance().subtract(amount);
+        BigDecimal toNewBalance = to.getBalance().add(convertedAmount);
+
+        from.setBalance(fromNewBalance);
+        to.setBalance(toNewBalance);
+
+        UserTransaction transaction = new UserTransaction(from.getUsername(), to.getUsername(), from.getCurrency(), to.getCurrency(), amount, convertedAmount);
+
+        systemUserDao.update(from);
+        systemUserDao.update(to);
+        userTransactionDao.persist(transaction);
     }
 
-    public void setUserService(UserEJB userService) {
-        this.userService = userService;
-    }
+    public SystemUser getLoggedInUser() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getRemoteUser();
 
-    public RequestEJB getRequestService() {
-        return requestService;
-    }
+        String currentUserUsername = context.getExternalContext().getRemoteUser();
 
-    public void setRequestService(RequestEJB requestService) {
-        this.requestService = requestService;
-    }
+        SystemUser currentUser = systemUserDao.findSystemUserByUsername(currentUserUsername);
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+        return currentUser;
     }
 
 }

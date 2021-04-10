@@ -5,13 +5,14 @@
  */
 package com.sd479.webapps2020.jsf;
 
-import com.sd479.webapps2020.ejb.TransactionEJB;
-import com.sd479.webapps2020.ejb.UserEJB;
+import com.sd479.webapps2020.dao.SystemUserDao;
+import com.sd479.webapps2020.dao.UserTransactionDao;
 import com.sd479.webapps2020.entity.SystemUser;
 import com.sd479.webapps2020.entity.UserTransaction;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -22,36 +23,31 @@ import javax.inject.Named;
 @RequestScoped
 public class UserTransactionsBean {
 
-    @EJB
-    UserEJB userService;
+    @EJB(name = "systemUserDao")
+    SystemUserDao systemUserDao;
 
-    @EJB
-    TransactionEJB transactionService;
+    @EJB(name = "userTransactionDao")
+    UserTransactionDao userTransactionDao;
 
     public UserTransactionsBean() {
     }
 
     public List<UserTransaction> getTransactions() {
-        SystemUser currentUser = userService.getLoggedInUser();
-        List<UserTransaction> transactions = transactionService.getTransactionsByUser(currentUser);
+        SystemUser currentUser = getLoggedInUser();
+        List<UserTransaction> transactions = userTransactionDao.findUserTransactionsByUsername(currentUser.getUsername());
 
         return transactions;
     }
 
-    public UserEJB getUserService() {
-        return userService;
-    }
+    public SystemUser getLoggedInUser() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getRemoteUser();
 
-    public void setUserService(UserEJB userService) {
-        this.userService = userService;
-    }
+        String currentUserUsername = context.getExternalContext().getRemoteUser();
 
-    public TransactionEJB getTransactionService() {
-        return transactionService;
-    }
+        SystemUser currentUser = systemUserDao.findSystemUserByUsername(currentUserUsername);
 
-    public void setTransactionService(TransactionEJB transactionService) {
-        this.transactionService = transactionService;
+        return currentUser;
     }
 
 }

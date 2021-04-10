@@ -5,11 +5,14 @@
  */
 package com.sd479.webapps2020.jsf;
 
-import com.sd479.webapps2020.ejb.AdminEJB;
-import com.sd479.webapps2020.ejb.TransactionEJB;
-import com.sd479.webapps2020.ejb.UserEJB;
+import com.sd479.webapps2020.dao.SystemUserDao;
+import com.sd479.webapps2020.dao.SystemUserGroupDao;
+import com.sd479.webapps2020.dao.UserTransactionDao;
+import com.sd479.webapps2020.entity.SystemUser;
+import com.sd479.webapps2020.entity.SystemUserGroup;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -23,12 +26,14 @@ import javax.inject.Named;
 @RequestScoped
 public class RegistrationBean implements Serializable {
 
-    @EJB
-    UserEJB userService;
-    @EJB
-    AdminEJB adminService;
-    @EJB
-    TransactionEJB transactionService;
+    @EJB(name = "systemUserDao")
+    SystemUserDao systemUserDao;
+
+    @EJB(name = "systemUserGroupDao")
+    SystemUserGroupDao systemUserGroupDao;
+
+    @EJB(name = "userTransactionDao")
+    UserTransactionDao userTransactionDao;
 
     Currency[] currencies = Currency.values();
 
@@ -43,31 +48,59 @@ public class RegistrationBean implements Serializable {
     }
 
     public String registerUser() {
-        BigDecimal balance = transactionService.getCurrencyConversion("GBP", currency, new BigDecimal(1000));
-        userService.registerUser(email, firstName, surname, username, password, currency, balance);
+        BigDecimal balance = userTransactionDao.getCurrencyConversion("GBP", currency, new BigDecimal(1000));
+
+        SystemUser newUser = new SystemUser(email, firstName, surname, username, password, balance, currency);
+        SystemUserGroup newUserGroup = new SystemUserGroup(username, "users");
+
+        systemUserDao.registerSystemUser(newUser);
+        systemUserGroupDao.persist(newUserGroup);
+
         return "index";
     }
 
     public String registerAdmin() {
-        BigDecimal balance = transactionService.getCurrencyConversion("GBP", currency, new BigDecimal(1000));
-        adminService.registerAdmin(email, firstName, surname, username, password, currency, balance);
+        BigDecimal balance = userTransactionDao.getCurrencyConversion("GBP", currency, new BigDecimal(1000));
+
+        SystemUser newUser = new SystemUser(email, firstName, surname, username, password, balance, currency);
+        SystemUserGroup newUserGroup = new SystemUserGroup(username, "admins");
+
+        systemUserDao.registerSystemUser(newUser);
+        systemUserGroupDao.persist(newUserGroup);
+
         return "admin";
     }
 
-    public UserEJB getUserService() {
-        return userService;
+    public SystemUserDao getSystemUserDao() {
+        return systemUserDao;
     }
 
-    public void setUserService(UserEJB userService) {
-        this.userService = userService;
+    public void setSystemUserDao(SystemUserDao systemUserDao) {
+        this.systemUserDao = systemUserDao;
     }
 
-    public AdminEJB getAdminService() {
-        return adminService;
+    public SystemUserGroupDao getSystemUserGroupDao() {
+        return systemUserGroupDao;
     }
 
-    public void setAdminService(AdminEJB adminService) {
-        this.adminService = adminService;
+    public void setSystemUserGroupDao(SystemUserGroupDao systemUserGroupDao) {
+        this.systemUserGroupDao = systemUserGroupDao;
+    }
+
+    public UserTransactionDao getUserTransactionDao() {
+        return userTransactionDao;
+    }
+
+    public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
+        this.userTransactionDao = userTransactionDao;
+    }
+
+    public Currency[] getCurrencies() {
+        return currencies;
+    }
+
+    public void setCurrencies(Currency[] currencies) {
+        this.currencies = currencies;
     }
 
     public String getEmail() {
@@ -118,25 +151,19 @@ public class RegistrationBean implements Serializable {
         this.currency = currency;
     }
 
-    public Currency[] getCurrencies() {
-        return currencies;
-    }
-
-    public void setCurrencies(Currency[] currencies) {
-        this.currencies = currencies;
-    }
-
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.userService);
-        hash = 59 * hash + Objects.hashCode(this.adminService);
-        hash = 59 * hash + Objects.hashCode(this.email);
-        hash = 59 * hash + Objects.hashCode(this.firstName);
-        hash = 59 * hash + Objects.hashCode(this.surname);
-        hash = 59 * hash + Objects.hashCode(this.username);
-        hash = 59 * hash + Objects.hashCode(this.password);
-        hash = 59 * hash + Objects.hashCode(this.currency);
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.systemUserDao);
+        hash = 29 * hash + Objects.hashCode(this.systemUserGroupDao);
+        hash = 29 * hash + Objects.hashCode(this.userTransactionDao);
+        hash = 29 * hash + Arrays.deepHashCode(this.currencies);
+        hash = 29 * hash + Objects.hashCode(this.email);
+        hash = 29 * hash + Objects.hashCode(this.firstName);
+        hash = 29 * hash + Objects.hashCode(this.surname);
+        hash = 29 * hash + Objects.hashCode(this.username);
+        hash = 29 * hash + Objects.hashCode(this.password);
+        hash = 29 * hash + Objects.hashCode(this.currency);
         return hash;
     }
 
@@ -170,10 +197,16 @@ public class RegistrationBean implements Serializable {
         if (!Objects.equals(this.currency, other.currency)) {
             return false;
         }
-        if (!Objects.equals(this.userService, other.userService)) {
+        if (!Objects.equals(this.systemUserDao, other.systemUserDao)) {
             return false;
         }
-        if (!Objects.equals(this.adminService, other.adminService)) {
+        if (!Objects.equals(this.systemUserGroupDao, other.systemUserGroupDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.userTransactionDao, other.userTransactionDao)) {
+            return false;
+        }
+        if (!Arrays.deepEquals(this.currencies, other.currencies)) {
             return false;
         }
         return true;

@@ -5,10 +5,12 @@
  */
 package com.sd479.webapps2020.dao;
 
+import com.sd479.webapps2020.entity.SystemUserGroup;
+
 /**
  *
  * @author Scott
  */
-public interface SystemUserGroupDao extends Dao {
+public interface SystemUserGroupDao extends Dao<SystemUserGroup> {
 
 }

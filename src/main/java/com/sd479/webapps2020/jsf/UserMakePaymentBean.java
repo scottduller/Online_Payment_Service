@@ -5,13 +5,16 @@
  */
 package com.sd479.webapps2020.jsf;
 
-import com.sd479.webapps2020.ejb.TransactionEJB;
-import com.sd479.webapps2020.ejb.UserEJB;
+import com.sd479.webapps2020.dao.SystemUserDao;
+import com.sd479.webapps2020.dao.UserTransactionDao;
 import com.sd479.webapps2020.entity.SystemUser;
+import com.sd479.webapps2020.entity.UserTransaction;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -22,11 +25,11 @@ import javax.inject.Named;
 @RequestScoped
 public class UserMakePaymentBean {
 
-    @EJB
-    UserEJB userService;
+    @EJB(name = "systemUserDao")
+    SystemUserDao systemUserDao;
 
-    @EJB
-    TransactionEJB transactionService;
+    @EJB(name = "userTransactionDao")
+    UserTransactionDao userTransactionDao;
 
     private String userNameTo;
     private BigDecimal amount;
@@ -43,16 +46,59 @@ public class UserMakePaymentBean {
     }
 
     public List<SystemUser> getUserList() {
-        SystemUser currentUser = userService.getLoggedInUser();
+        SystemUser currentUser = getLoggedInUser();
 
-        List<SystemUser> users = userService.getUserList();
+        List<SystemUser> users = systemUserDao.findAllSystemUsers();
         users.remove(currentUser);
 
         return users;
     }
 
-    public UserEJB getUserService() {
-        return userService;
+    public SystemUser getLoggedInUser() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getRemoteUser();
+
+        String currentUserUsername = context.getExternalContext().getRemoteUser();
+
+        SystemUser currentUser = systemUserDao.findSystemUserByUsername(currentUserUsername);
+
+        return currentUser;
+    }
+
+    public void makePayment() {
+        SystemUser from = getLoggedInUser();
+        SystemUser to = systemUserDao.findSystemUserByUsername(userNameTo);
+
+        BigDecimal convertedAmount = userTransactionDao.getCurrencyConversion(from.getCurrency(), to.getCurrency(), amount);
+
+        BigDecimal fromNewBalance = from.getBalance().subtract(amount);
+        BigDecimal toNewBalance = to.getBalance().add(convertedAmount);
+
+        from.setBalance(fromNewBalance);
+        to.setBalance(toNewBalance);
+
+        UserTransaction transaction = new UserTransaction(from.getUsername(), to.getUsername(), from.getCurrency(), to.getCurrency(), amount, convertedAmount);
+
+        systemUserDao.update(from);
+        systemUserDao.update(to);
+        userTransactionDao.persist(transaction);
+
+    }
+
+    public SystemUserDao getSystemUserDao() {
+        return systemUserDao;
+    }
+
+    public void setSystemUserDao(SystemUserDao systemUserDao) {
+        this.systemUserDao = systemUserDao;
+    }
+
+    public UserTransactionDao getUserTransactionDao() {
+        return userTransactionDao;
+    }
+
+    public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
+        this.userTransactionDao = userTransactionDao;
     }
 
     public BigDecimal getAmount() {
@@ -63,14 +109,41 @@ public class UserMakePaymentBean {
         this.amount = amount;
     }
 
-    public void setUserService(UserEJB userService) {
-        this.userService = userService;
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.systemUserDao);
+        hash = 83 * hash + Objects.hashCode(this.userTransactionDao);
+        hash = 83 * hash + Objects.hashCode(this.userNameTo);
+        hash = 83 * hash + Objects.hashCode(this.amount);
+        return hash;
     }
 
-    public void makePayment() {
-        SystemUser currentUser = userService.getLoggedInUser();
-        SystemUser userTo = userService.getUserByUsername(userNameTo).get(0);
-
-        transactionService.makePayment(currentUser.getId(), userTo.getId(), amount);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final UserMakePaymentBean other = (UserMakePaymentBean) obj;
+        if (!Objects.equals(this.userNameTo, other.userNameTo)) {
+            return false;
+        }
+        if (!Objects.equals(this.systemUserDao, other.systemUserDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.userTransactionDao, other.userTransactionDao)) {
+            return false;
+        }
+        if (!Objects.equals(this.amount, other.amount)) {
+            return false;
+        }
+        return true;
     }
+
 }

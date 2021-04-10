@@ -9,11 +9,11 @@ package com.sd479.webapps2020.dao;
  *
  * @author Scott
  */
-public interface Dao {
+public interface Dao<E> {
 
     void persist(E entity);
 
     void remove(E entity);
 
-    E findById(K id);
+    E findById(Long id);
 }

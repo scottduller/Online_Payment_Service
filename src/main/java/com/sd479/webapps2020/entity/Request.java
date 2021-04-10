@@ -38,9 +38,9 @@ public class Request implements Serializable {
     public Request() {
     }
 
-    public Request(String requestFrom, String requestTo, BigDecimal amount) {
-        this.usernameFrom = requestFrom;
-        this.usernameTo = requestTo;
+    public Request(String usernameFrom, String usernameTo, BigDecimal amount) {
+        this.usernameFrom = usernameFrom;
+        this.usernameTo = usernameTo;
         this.amount = amount;
     }
 

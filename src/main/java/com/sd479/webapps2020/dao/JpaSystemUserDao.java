@@ -5,8 +5,8 @@
  */
 package com.sd479.webapps2020.dao;
 
+import com.sd479.webapps2020.entity.SystemUser;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Scott
  */
-public class JpaSystemUserDao extends JpaDao implements SystemUserDao {
+public class JpaSystemUserDao extends JpaDao<SystemUser> implements SystemUserDao {
 
     @Override
     public List findAllSystemUsers() {
@@ -25,12 +25,12 @@ public class JpaSystemUserDao extends JpaDao implements SystemUserDao {
     }
 
     @Override
-    public E findSystemUserByUsername(String username) {
-        return (E) em.find(entityClass, username);
+    public SystemUser findSystemUserByUsername(String username) {
+        return (SystemUser) em.find(entityClass, username);
     }
 
     @Override
-    public void registerSystemUser(E systemUser) {
+    public void registerSystemUser(SystemUser systemUser) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             String pw = systemUser.getPassword();
@@ -49,8 +49,7 @@ public class JpaSystemUserDao extends JpaDao implements SystemUserDao {
     }
 
     @Override
-    public void updateBalance(E systemUser, BigDecimal newBalance) {
-        systemUser.setBalance(newBalance);
+    public void update(SystemUser systemUser) {
         em.merge(systemUser);
     }
 

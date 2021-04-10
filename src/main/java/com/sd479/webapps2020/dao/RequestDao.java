@@ -5,14 +5,15 @@
  */
 package com.sd479.webapps2020.dao;
 
+import com.sd479.webapps2020.entity.Request;
 import java.util.List;
 
 /**
  *
  * @author Scott
  */
-public interface RequestDao extends Dao {
+public interface RequestDao extends Dao<Request> {
 
-    List findRequestsByUsernameTo(String username);
+    List<Request> findRequestsByUsernameTo(String username);
 
 }

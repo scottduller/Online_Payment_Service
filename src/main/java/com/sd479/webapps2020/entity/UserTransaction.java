@@ -22,7 +22,7 @@ import javax.persistence.NamedQuery;
  * @author Scott
  */
 @NamedQueries({
-    @NamedQuery(name = "findTransactionsByUser", query = "SELECT t FROM UserTransaction t WHERE t.usernameFrom=:username OR t.usernameTo=:username")
+    @NamedQuery(name = "findUserTransactionsByUsername", query = "SELECT t FROM UserTransaction t WHERE t.usernameFrom=:username OR t.usernameTo=:username")
 })
 @Entity
 public class UserTransaction implements Serializable {

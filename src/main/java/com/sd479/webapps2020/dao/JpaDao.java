@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author Scott
  */
-public abstract class JpaDao implements Dao {
+public abstract class JpaDao<E> implements Dao<E> {
 
     Class entityClass;
 
@@ -22,7 +22,7 @@ public abstract class JpaDao implements Dao {
 
     public JpaDao() {
         ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
-        this.entityClass = (Class) genericSuperclass.getActualTypeArguments()[1];
+        this.entityClass = (Class) genericSuperclass.getActualTypeArguments()[0];
     }
 
     @Override
@@ -36,8 +36,24 @@ public abstract class JpaDao implements Dao {
     }
 
     @Override
-    public Object findById(Object id) {
-        return em.find(entityClass, id);
+    public E findById(Long id) {
+        return (E) em.find(entityClass, id);
+    }
+
+    public Class getEntityClass() {
+        return entityClass;
+    }
+
+    public void setEntityClass(Class entityClass) {
+        this.entityClass = entityClass;
+    }
+
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
 }

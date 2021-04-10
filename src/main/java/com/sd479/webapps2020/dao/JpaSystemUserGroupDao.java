@@ -5,10 +5,12 @@
  */
 package com.sd479.webapps2020.dao;
 
+import com.sd479.webapps2020.entity.SystemUserGroup;
+
 /**
  *
  * @author Scott
  */
-public class JpaSystemUserGroupDao extends JpaDao implements SystemUserGroupDao {
+public class JpaSystemUserGroupDao extends JpaDao<SystemUserGroup> implements SystemUserGroupDao {
 
 }

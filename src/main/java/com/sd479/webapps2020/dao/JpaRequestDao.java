@@ -5,17 +5,18 @@
  */
 package com.sd479.webapps2020.dao;
 
+import com.sd479.webapps2020.entity.Request;
 import java.util.List;
 
 /**
  *
  * @author Scott
  */
-public class JpaRequestDao extends JpaDao implements RequestDao {
+public class JpaRequestDao extends JpaDao<Request> implements RequestDao {
 
     @Override
-    public List findRequestsByUsernameTo(String username) {
-        return (List) em.createNamedQuery("findRequestsByUsernameTo").setParameter("username", username).getResultList();
+    public List<Request> findRequestsByUsernameTo(String username) {
+        return em.createNamedQuery("findTransactionsByUsername").setParameter("username", username).getResultList();
     }
 
 }
