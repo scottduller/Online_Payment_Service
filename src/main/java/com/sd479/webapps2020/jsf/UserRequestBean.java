@@ -98,7 +98,7 @@ public class UserRequestBean {
 
         systemUserDao.update(from);
         systemUserDao.update(to);
-        userTransactionDao.persist(transaction);
+        userTransactionDao.persistWithTimestamp(transaction);
     }
 
     public SystemUser getLoggedInUser() {

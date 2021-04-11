@@ -21,7 +21,10 @@ C:\Users\Scott Duller\Development\University\Web Applications and Services\Assig
 C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\conversion\RSConversionApplication.java
 C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\jsf\UserBean.java
 C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\conversion\RSConversionClient.java
+C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\thrift\timestampserver\TimestampServer.java
 C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\dao\JpaSystemUserDao.java
 C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\jsf\UserRequestBean.java
+C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\thrift\timestamp\TransactionTimestampService.java
+C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\thrift\timestampserver\TransactionTimestampHandler.java
 C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\dao\SystemUserDao.java
 C:\Users\Scott Duller\Development\University\Web Applications and Services\Assignment\webapps2020\src\main\java\com\sd479\webapps2020\entity\SystemUser.java

@@ -15,6 +15,8 @@ import java.util.List;
  */
 public interface UserTransactionDao extends Dao<UserTransaction> {
 
+    void persistWithTimestamp(UserTransaction entity);
+
     BigDecimal getCurrencyConversion(String currencyFrom, String currencyTo, BigDecimal amount);
 
     List<UserTransaction> findUserTransactionsByUsername(String username);

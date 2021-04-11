@@ -1,11 +1,12 @@
 package com.sd479.webapps2020.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.7.v20200504-rNA", date="2021-04-11T12:44:51")
+@Generated(value="EclipseLink-2.7.7.v20200504-rNA", date="2021-04-11T18:49:20")
 @StaticMetamodel(UserTransaction.class)
 public class UserTransaction_ { 
 
@@ -16,5 +17,6 @@ public class UserTransaction_ {
     public static volatile SingularAttribute<UserTransaction, String> currencyTo;
     public static volatile SingularAttribute<UserTransaction, String> usernameFrom;
     public static volatile SingularAttribute<UserTransaction, String> currencyFrom;
+    public static volatile SingularAttribute<UserTransaction, Date> transactionTimestamp;
 
 }

@@ -31,6 +31,10 @@
                 <f:facet name="header">Amount</f:facet>
                 + #{transaction.amountTo}
             </h:column>
+            <h:column>
+                <f:facet name="header">Timestamp</f:facet>
+                    #{transaction.transactionTimestamp}
+            </h:column>
         </h:dataTable>
         <br/>
         <h:link value="Back to user area" outcome="user" />

@@ -81,7 +81,7 @@ public class UserMakePaymentBean {
 
         systemUserDao.update(from);
         systemUserDao.update(to);
-        userTransactionDao.persist(transaction);
+        userTransactionDao.persistWithTimestamp(transaction);
 
     }
 

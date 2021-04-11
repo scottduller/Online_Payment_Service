@@ -8,6 +8,7 @@ package com.sd479.webapps2020.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -39,6 +42,9 @@ public class UserTransaction implements Serializable {
     private BigDecimal amountFrom;
     @Column(precision = 12, scale = 2)
     private BigDecimal amountTo;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date transactionTimestamp;
 
     public UserTransaction() {
     }
@@ -108,16 +114,25 @@ public class UserTransaction implements Serializable {
         this.currencyTo = currencyTo;
     }
 
+    public Date getTransactionTimestamp() {
+        return transactionTimestamp;
+    }
+
+    public void setTransactionTimestamp(Date transactionTimestamp) {
+        this.transactionTimestamp = transactionTimestamp;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 19 * hash + Objects.hashCode(this.id);
-        hash = 19 * hash + Objects.hashCode(this.usernameFrom);
-        hash = 19 * hash + Objects.hashCode(this.usernameTo);
-        hash = 19 * hash + Objects.hashCode(this.currencyFrom);
-        hash = 19 * hash + Objects.hashCode(this.currencyTo);
-        hash = 19 * hash + Objects.hashCode(this.amountFrom);
-        hash = 19 * hash + Objects.hashCode(this.amountTo);
+        hash = 37 * hash + Objects.hashCode(this.id);
+        hash = 37 * hash + Objects.hashCode(this.usernameFrom);
+        hash = 37 * hash + Objects.hashCode(this.usernameTo);
+        hash = 37 * hash + Objects.hashCode(this.currencyFrom);
+        hash = 37 * hash + Objects.hashCode(this.currencyTo);
+        hash = 37 * hash + Objects.hashCode(this.amountFrom);
+        hash = 37 * hash + Objects.hashCode(this.amountTo);
+        hash = 37 * hash + Objects.hashCode(this.transactionTimestamp);
         return hash;
     }
 
@@ -152,6 +167,9 @@ public class UserTransaction implements Serializable {
             return false;
         }
         if (!Objects.equals(this.amountTo, other.amountTo)) {
+            return false;
+        }
+        if (!Objects.equals(this.transactionTimestamp, other.transactionTimestamp)) {
             return false;
         }
         return true;
