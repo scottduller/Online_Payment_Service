@@ -11,6 +11,7 @@ import com.sd479.webapps2020.entity.SystemUser;
 import com.sd479.webapps2020.entity.UserTransaction;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -33,6 +34,7 @@ public class UserTransactionsBean {
     public UserTransactionsBean() {
     }
 
+    @RolesAllowed("users")
     public List<UserTransaction> getTransactions() {
         SystemUser currentUser = getLoggedInUser();
         List<UserTransaction> transactions = userTransactionDao.findUserTransactionsByUsername(currentUser.getUsername());
@@ -40,6 +42,7 @@ public class UserTransactionsBean {
         return transactions;
     }
 
+    @RolesAllowed("users")
     public SystemUser getLoggedInUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getRemoteUser();
@@ -51,22 +54,27 @@ public class UserTransactionsBean {
         return currentUser;
     }
 
+    @RolesAllowed("users")
     public SystemUserDao getSystemUserDao() {
         return systemUserDao;
     }
 
+    @RolesAllowed("users")
     public void setSystemUserDao(SystemUserDao systemUserDao) {
         this.systemUserDao = systemUserDao;
     }
 
+    @RolesAllowed("users")
     public UserTransactionDao getUserTransactionDao() {
         return userTransactionDao;
     }
 
+    @RolesAllowed("users")
     public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
         this.userTransactionDao = userTransactionDao;
     }
 
+    @RolesAllowed("users")
     @Override
     public int hashCode() {
         int hash = 7;
@@ -75,6 +83,7 @@ public class UserTransactionsBean {
         return hash;
     }
 
+    @RolesAllowed("users")
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

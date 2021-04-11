@@ -43,14 +43,6 @@ public class Seeder {
             systemUserDao.registerSystemUser(newSystemUser);
             systemUserGroupDao.persist(newSystemUserGroup);
         }
-
-        if (systemUserDao.findSystemUserByUsername("user1") == null) {
-            SystemUser newSystemUser = new SystemUser("user1@user1.com", "user1", "user1", "user1", "user1", new BigDecimal(1000), "USD");
-            SystemUserGroup newSystemUserGroup = new SystemUserGroup("user1", "users");
-
-            systemUserDao.registerSystemUser(newSystemUser);
-            systemUserGroupDao.persist(newSystemUserGroup);
-        }
     }
 
     public SystemUserDao getSystemUserDao() {

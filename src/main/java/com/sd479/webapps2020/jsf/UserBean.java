@@ -11,6 +11,7 @@ import com.sd479.webapps2020.entity.SystemUser;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -35,14 +36,17 @@ public class UserBean {
     public UserBean() {
     }
 
+    @RolesAllowed("users")
     public String getUserName() {
         return userName;
     }
 
+    @RolesAllowed("users")
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    @RolesAllowed("users")
     public List<SystemUser> getUserList() {
         SystemUser currentUser = getLoggedInUser();
 
@@ -52,6 +56,7 @@ public class UserBean {
         return users;
     }
 
+    @RolesAllowed("users")
     public SystemUser getLoggedInUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getRemoteUser();
@@ -63,22 +68,27 @@ public class UserBean {
         return currentUser;
     }
 
+    @RolesAllowed("users")
     public BigDecimal getCurrentUserBalance() {
         return getLoggedInUser().getBalance();
     }
 
+    @RolesAllowed("users")
     public SystemUserDao getSystemUserDao() {
         return systemUserDao;
     }
 
+    @RolesAllowed("users")
     public void setSystemUserDao(SystemUserDao systemUserDao) {
         this.systemUserDao = systemUserDao;
     }
 
+    @RolesAllowed("users")
     public UserTransactionDao getUserTransactionDao() {
         return userTransactionDao;
     }
 
+    @RolesAllowed("users")
     public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
         this.userTransactionDao = userTransactionDao;
     }

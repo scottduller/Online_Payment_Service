@@ -14,6 +14,7 @@ import com.sd479.webapps2020.entity.UserTransaction;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -43,6 +44,7 @@ public class UserRequestBean {
     public UserRequestBean() {
     }
 
+    @RolesAllowed("users")
     public void createRequest() {
         SystemUser currentUser = getLoggedInUser();
         SystemUser toUser = systemUserDao.findSystemUserByUsername(userName);
@@ -58,11 +60,13 @@ public class UserRequestBean {
 
     }
 
+    @RolesAllowed("users")
     public List<Request> getUserRequests() {
         SystemUser currentUser = getLoggedInUser();
         return requestDao.findRequestsByUsernameTo(currentUser.getUsername());
     }
 
+    @RolesAllowed("users")
     public void acceptRequest(Request request, boolean accepted) {
         SystemUser fromUser = systemUserDao.findSystemUserByUsername(request.getUsernameFrom());
         SystemUser toUser = systemUserDao.findSystemUserByUsername(request.getUsernameTo());
@@ -85,6 +89,7 @@ public class UserRequestBean {
         }
     }
 
+    @RolesAllowed("users")
     public void makePayment(SystemUser from, SystemUser to, BigDecimal amount) {
         BigDecimal convertedAmount = userTransactionDao.getCurrencyConversion(from.getCurrency(), to.getCurrency(), amount);
 
@@ -101,6 +106,7 @@ public class UserRequestBean {
         userTransactionDao.persistWithTimestamp(transaction);
     }
 
+    @RolesAllowed("users")
     public SystemUser getLoggedInUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getRemoteUser();
@@ -112,42 +118,52 @@ public class UserRequestBean {
         return currentUser;
     }
 
+    @RolesAllowed("users")
     public SystemUserDao getSystemUserDao() {
         return systemUserDao;
     }
 
+    @RolesAllowed("users")
     public void setSystemUserDao(SystemUserDao systemUserDao) {
         this.systemUserDao = systemUserDao;
     }
 
+    @RolesAllowed("users")
     public UserTransactionDao getUserTransactionDao() {
         return userTransactionDao;
     }
 
+    @RolesAllowed("users")
     public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
         this.userTransactionDao = userTransactionDao;
     }
 
+    @RolesAllowed("users")
     public RequestDao getRequestDao() {
         return requestDao;
     }
 
+    @RolesAllowed("users")
     public void setRequestDao(RequestDao requestDao) {
         this.requestDao = requestDao;
     }
 
+    @RolesAllowed("users")
     public String getUserName() {
         return userName;
     }
 
+    @RolesAllowed("users")
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    @RolesAllowed("users")
     public BigDecimal getAmount() {
         return amount;
     }
 
+    @RolesAllowed("users")
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }

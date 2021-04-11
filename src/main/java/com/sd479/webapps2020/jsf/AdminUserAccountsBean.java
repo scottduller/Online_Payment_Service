@@ -12,6 +12,7 @@ import com.sd479.webapps2020.entity.UserTransaction;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -36,14 +37,17 @@ public class AdminUserAccountsBean {
     public AdminUserAccountsBean() {
     }
 
+    @RolesAllowed("admins")
     public void setSelectedUser() {
         systemUser = systemUserDao.findSystemUserByUsername(userName);
     }
 
+    @RolesAllowed("admins")
     public List<SystemUser> getUserList() {
         return systemUserDao.findAllSystemUsers();
     }
 
+    @RolesAllowed("admins")
     public BigDecimal getUsersBalance() {
         if (systemUser != null) {
             return systemUser.getBalance();
@@ -51,6 +55,7 @@ public class AdminUserAccountsBean {
         return null;
     }
 
+    @RolesAllowed("admins")
     public List<UserTransaction> getUserTransactions() {
         if (systemUser != null) {
             return userTransactionDao.findUserTransactionsByUsername(userName);
@@ -58,34 +63,42 @@ public class AdminUserAccountsBean {
         return null;
     }
 
+    @RolesAllowed("admins")
     public SystemUserDao getSystemUserDao() {
         return systemUserDao;
     }
 
+    @RolesAllowed("admins")
     public void setSystemUserDao(SystemUserDao systemUserDao) {
         this.systemUserDao = systemUserDao;
     }
 
+    @RolesAllowed("admins")
     public UserTransactionDao getUserTransactionDao() {
         return userTransactionDao;
     }
 
+    @RolesAllowed("admins")
     public void setUserTransactionDao(UserTransactionDao userTransactionDao) {
         this.userTransactionDao = userTransactionDao;
     }
 
+    @RolesAllowed("admins")
     public String getUserName() {
         return userName;
     }
 
+    @RolesAllowed("admins")
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    @RolesAllowed("admins")
     public SystemUser getSystemUser() {
         return systemUser;
     }
 
+    @RolesAllowed("admins")
     public void setSystemUser(SystemUser systemUser) {
         this.systemUser = systemUser;
     }
