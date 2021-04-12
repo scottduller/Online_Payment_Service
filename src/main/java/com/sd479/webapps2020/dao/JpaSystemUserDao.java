@@ -45,7 +45,7 @@ public class JpaSystemUserDao extends JpaDao<SystemUser> implements SystemUserDa
     public void registerSystemUser(SystemUser systemUser) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            String pw = systemUser.getPassword();
+            String pw = systemUser.getUserpassword();
             md.update(pw.getBytes("UTF-8"));
             byte[] digest = md.digest();
             StringBuilder sb = new StringBuilder();
@@ -53,7 +53,7 @@ public class JpaSystemUserDao extends JpaDao<SystemUser> implements SystemUserDa
                 sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
             }
             String passwordDB = sb.toString();
-            systemUser.setPassword(passwordDB);
+            systemUser.setUserpassword(passwordDB);
             em.persist(systemUser);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
             Logger.getLogger(JpaSystemUserDao.class.getName()).log(Level.SEVERE, null, e);

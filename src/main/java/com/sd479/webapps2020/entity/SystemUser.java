@@ -49,7 +49,7 @@ public class SystemUser implements Serializable {
     String username;
 
     @NotNull
-    String password;
+    String userpassword;
 
     @NotNull
     @Column(precision = 12, scale = 2)
@@ -69,7 +69,7 @@ public class SystemUser implements Serializable {
         this.firstName = firstName;
         this.surname = surname;
         this.username = username;
-        this.password = password;
+        this.userpassword = password;
         this.balance = balance;
         this.currency = currency;
         this.version = version;
@@ -115,12 +115,12 @@ public class SystemUser implements Serializable {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserpassword() {
+        return userpassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserpassword(String userpassword) {
+        this.userpassword = userpassword;
     }
 
     public BigDecimal getBalance() {
@@ -155,7 +155,7 @@ public class SystemUser implements Serializable {
         hash = 11 * hash + Objects.hashCode(this.firstName);
         hash = 11 * hash + Objects.hashCode(this.surname);
         hash = 11 * hash + Objects.hashCode(this.username);
-        hash = 11 * hash + Objects.hashCode(this.password);
+        hash = 11 * hash + Objects.hashCode(this.userpassword);
         hash = 11 * hash + Objects.hashCode(this.balance);
         hash = 11 * hash + Objects.hashCode(this.currency);
         hash = 11 * hash + Objects.hashCode(this.version);
@@ -186,7 +186,7 @@ public class SystemUser implements Serializable {
         if (!Objects.equals(this.username, other.username)) {
             return false;
         }
-        if (!Objects.equals(this.password, other.password)) {
+        if (!Objects.equals(this.userpassword, other.userpassword)) {
             return false;
         }
         if (!Objects.equals(this.currency, other.currency)) {
