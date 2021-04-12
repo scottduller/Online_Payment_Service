@@ -82,7 +82,6 @@ public class RSConversion {
         }
     }
 
-    // TODO: EITHER USE THIS WITH WHAT IM DOING OR SEE IF JAVA HAS A CURRENCY CONVERSION PACKAGE!!!
     @GET
     @Path("/{currency1}/{currency2}/{amount_of_currency1}")
     @Produces({MediaType.APPLICATION_JSON})

@@ -9,18 +9,6 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
-/**
- * Jersey REST client generated for REST resource:RSConversion [/conversion]<br>
- * USAGE:
- * <pre>
- *        RSConversionClient client = new RSConversionClient();
- *        Object response = client.XXX(...);
- *        // do whatever with response
- *        client.close();
- * </pre>
- *
- * @author Scott
- */
 public class RSConversionClient {
 
     private WebTarget webTarget;
