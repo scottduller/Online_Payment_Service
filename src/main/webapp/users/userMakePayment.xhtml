@@ -29,7 +29,7 @@ and open the template in the editor.
                 <h:message for="selectUsernamePayment" style="color:red"/>
 
                 <h:outputLabel for="selectAmountPayment" value="Amount: "/>
-                <h:inputText id="selectAmountPayment" value="#{userMakePaymentBean.amount}" title="Amount" required="true"  requiredMessage="Mandatory Field" validatorMessage="Amount must be more than 0.01 and less than your balance." converterMessage="Must include correct currency symbol and must be a valid currency. Example: £9.99, US$9.99, €9.99">
+                <h:inputText id="selectAmountPayment" value="#{userMakePaymentBean.amount}" title="Amount" required="true"  requiredMessage="Mandatory Field" validatorMessage="Amount must be more than 0.01 and less than your balance." converterMessage="Must include correct currency symbol and must be a valid currency. Example: £/GBP9.99, US$/USD9.99, €/EUR9.99">
                     <f:validateDoubleRange minimum="0.01" maximum="#{userBean.currentUserBalance}"/>
                     <f:convertNumber groupingUsed="true" currencyCode="#{userBean.loggedInUser.currency}" type="currency"/>
                 </h:inputText>
